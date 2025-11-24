@@ -1,0 +1,154 @@
+/* Resume Page Styles */
+.resume-container {
+  min-height: 100vh;
+  background: white;
+  color: #1e40af;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.resume-title {
+  font-size: 2.5rem;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.resume-subtitle {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.resume-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.experience-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e5e5;
+}
+
+.experience-date {
+  min-width: 120px;
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.experience-content {
+  flex: 1;
+}
+
+.experience-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.25rem;
+}
+
+.experience-company {
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.experience-description {
+  color: #666;
+  line-height: 1.6;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.skill-group {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e5e5;
+}
+
+.skill-category {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: white;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #e5e5e5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-container {
+    padding: 1rem;
+  }
+  
+  .resume-title {
+    font-size: 2rem;
+  }
+  
+  .contact-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .experience-item {
+    flex-direction: column;
+  }
+  
+  .experience-date {
+    min-width: auto;
+  }
+}
