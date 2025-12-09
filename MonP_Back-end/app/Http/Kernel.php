@@ -40,7 +40,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            'throttle:api',
+            // 'throttle:api', // Disabled: Redis not available on Render - TODO: Configure file-based rate limiting
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

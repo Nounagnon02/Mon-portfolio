@@ -3,8 +3,10 @@
 # Démarrer PHP-FPM en arrière-plan
 php-fpm -D
 
-# Créer le fichier SQLite s'il n'existe pas
-touch /var/www/database/database.sqlite
+# Créer le fichier SQLite s'il n'existe pas (sans l'overwrite)
+if [ ! -f /var/www/database/database.sqlite ]; then
+    touch /var/www/database/database.sqlite
+fi
 
 # Exécuter les migrations avec SQLite
 php artisan migrate --force --no-interaction || true
