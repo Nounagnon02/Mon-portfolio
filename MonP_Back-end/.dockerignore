@@ -1,0 +1,46 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment files (use Render's env vars instead)
+.env
+.env.local
+.env.production
+.env.backup
+.env.*.local
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+.phpunit.result.cache
+phpunit.xml
+tests/
+
+# Development
+node_modules/
+.npm
+
+# Documentation
+README.md
+docs/
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Render
+render.yaml

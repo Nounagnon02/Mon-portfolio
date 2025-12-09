@@ -3,23 +3,35 @@ services:
     name: portfolio-api
     runtime: docker
     plan: free
-    healthCheckPath: /health
+    healthCheckPath: /api/test
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: "false"
+      - key: APP_KEY
+        sync: false
       - key: LOG_CHANNEL
         value: stderr
       - key: DB_CONNECTION
         value: pgsql
-      - key: DATABASE_URL
-        value: ${DATABASE_URL}
-      - key: REDIS_URL
-        value: ${REDIS_URL}
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
       - key: FRONTEND_URL
-        value: https://mon-portfolio-five-alpha.vercel.app/
-
-caches:
-  - name: portfolio-redis
-    plan: free
+        sync: false
