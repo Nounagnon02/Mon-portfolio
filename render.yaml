@@ -7,11 +7,11 @@ services:
     plan: free
     envVars:
       - key: APP_NAME
-        value: Laravel
+        value: "Portfolio de KANGBODE PRINCE"
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: "false"
       - key: APP_KEY
         sync: false
       - key: APP_URL
@@ -23,32 +23,22 @@ services:
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
-        fromDatabase:
-          name: histories_6eia
-          property: host
+        value: ep-hidden-sun-afv37vc4-pooler.c-2.us-west-2.aws.neon.tech
       - key: DB_PORT
-        fromDatabase:
-          name: histories_6eia
-          property: port
+        value: "5432"
       - key: DB_DATABASE
-        fromDatabase:
-          name: histories_6eia
-          property: database
+        value: neondb
       - key: DB_USERNAME
-        fromDatabase:
-          name: histories_6eia
-          property: user
+        value: neondb_owner
       - key: DB_PASSWORD
-        fromDatabase:
-          name: histories_6eia
-          property: password
-      - key: FRONTEND_URL
         sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: FRONTEND_URL
+        value: https://mon-portfolio-kp-tech.vercel.app
       - key: SESSION_DRIVER
         value: file
       - key: QUEUE_CONNECTION
         value: sync
       - key: CACHE_DRIVER
         value: file
-      - key: DB_SSLMODE
-        value: require
