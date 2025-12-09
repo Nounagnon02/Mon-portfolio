@@ -30,6 +30,9 @@ sleep 3
 # Run migrations (continue even if some fail)
 php artisan migrate --force || echo "Migration completed with warnings"
 
+# Run seeders (only if tables are empty)
+php artisan db:seed --force || echo "Seeding completed with warnings"
+
 # Clear and cache config for production
 php artisan config:cache
 php artisan route:cache
