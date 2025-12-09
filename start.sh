@@ -4,7 +4,7 @@
 php-fpm -D
 
 # Exécuter les migrations
-php artisan migrate --force || true
+php artisan migrate --force --no-interaction || true
 
 # Exécuter les seeders SEULEMENT si c'est le premier déploiement
 # ou si la variable FORCE_SEED est définie
