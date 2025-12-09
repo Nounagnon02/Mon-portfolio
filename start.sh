@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # Démarrer PHP-FPM en arrière-plan
-# Cache cleared: 2025-12-09
 php-fpm -D
 
-# Migrations désactivées - utiliser la console Render pour les exécuter manuellement
-# php artisan migrate --force --no-interaction || true
+# Nettoyer les migrations supprimées
+php artisan migrate:reset --force --no-interaction 2>/dev/null || true
+
+# Exécuter les migrations
+php artisan migrate --force --no-interaction || true
 
 # Exécuter les seeders SEULEMENT si c'est le premier déploiement
 # ou si la variable FORCE_SEED est définie
