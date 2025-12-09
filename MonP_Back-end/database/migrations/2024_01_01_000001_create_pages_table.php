@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->string('page_name')->unique();
+            $table->string('page_name');
             $table->string('hero_headline')->nullable();
             $table->string('hero_subheadline')->nullable();
             $table->text('hero_background_image')->nullable();
