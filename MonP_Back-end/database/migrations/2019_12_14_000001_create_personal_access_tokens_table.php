@@ -7,24 +7,32 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
+     * Disable transaction wrapping for PostgreSQL compatibility
+     */
+    public $withinTransaction = false;
+
+    /**
      * Run the migrations.
      */
     public function up(): void
     {
-        // Skip if table already exists (handles partial migration failures)
+        // Skip if table already exists
         if (Schema::hasTable('personal_access_tokens')) {
             return;
         }
 
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
+            $table->string('tokenable_type');
+            $table->unsignedBigInteger('tokenable_id');
             $table->string('name');
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
+
+            $table->index(['tokenable_type', 'tokenable_id']);
         });
     }
 
