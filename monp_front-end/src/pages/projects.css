@@ -1,0 +1,173 @@
+/* Projects Page */
+.projects-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.projects-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(17, 115, 212, 0.05) 0%, rgba(58, 143, 224, 0.05) 100%);
+  z-index: 0;
+}
+
+/* Hero Section */
+.projects-hero {
+  text-align: center;
+  margin-bottom: 60px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #1173d4 0%, #3a8fe0 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(17, 115, 212, 0.3);
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.projects-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1173d4 0%, #3a8fe0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.projects-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #64748b;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Filter Section */
+.projects-filter {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s ease-out 0.3s backwards;
+}
+
+.filter-btn {
+  background: white;
+  color: #64748b;
+  border: 2px solid #e2e8f0;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-btn:hover {
+  border-color: #1173d4;
+  color: #1173d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(17, 115, 212, 0.15);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #1173d4 0%, #3a8fe0 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(17, 115, 212, 0.3);
+}
+
+/* Projects Grid - Styles moved to PublicProjects.css to avoid conflicts */
+
+/* No Projects */
+.no-projects {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+  font-size: 18px;
+}
+
+/* Animations - Defined in PublicProjects.css */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .projects-section {
+    padding: 100px 20px 60px;
+  }
+
+  .projects-hero {
+    margin-bottom: 40px;
+  }
+
+  .hero-badge {
+    font-size: 13px;
+    padding: 6px 16px;
+  }
+
+  .projects-filter {
+    margin-bottom: 40px;
+    gap: 10px;
+  }
+
+  .filter-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-section {
+    padding: 80px 16px 40px;
+  }
+
+  .projects-hero {
+    margin-bottom: 30px;
+  }
+
+  .hero-badge {
+    font-size: 12px;
+    padding: 6px 14px;
+    margin-bottom: 16px;
+  }
+
+  .projects-subtitle {
+    font-size: 1rem;
+  }
+
+  .projects-filter {
+    gap: 8px;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

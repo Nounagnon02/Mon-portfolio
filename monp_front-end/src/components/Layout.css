@@ -6,7 +6,7 @@
   background-color: #ffffff;
 }
 
-.main-content {
+.layout .main-content {
   margin-top: 80px;
   flex: 1;
 }

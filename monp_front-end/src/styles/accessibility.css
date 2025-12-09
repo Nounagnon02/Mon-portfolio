@@ -1,0 +1,104 @@
+/* ========================================
+   Accessibility Improvements
+   ======================================== */
+
+/* Focus visible for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast for text */
+.btn,
+.nav-link,
+.form-input,
+.form-textarea {
+  color: #1f2937;
+}
+
+.btn--primary {
+  color: #ffffff;
+  background-color: #1f2937;
+}
+
+.btn--primary:hover {
+  background-color: #111827;
+}
+
+/* Improved form input contrast */
+.form-input,
+.form-textarea {
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  color: #1f2937;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #3b82f6;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-to-main:focus {
+  top: 0;
+}
+
+/* Ensure buttons have minimum touch target size */
+button,
+a[role="button"],
+.btn {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve link visibility */
+a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #7c3aed;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .btn,
+  .form-input,
+  .form-textarea {
+    border-width: 2px;
+  }
+
+  .btn--primary {
+    border: 2px solid #000;
+  }
+}

@@ -357,11 +357,12 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: var(--spacing-md);
-  aspect-ratio: 16 / 9;
+  /* aspect-ratio: 16 / 9; */
   background-size: cover;
   background-position: center;
   border-radius: var(--radius-sm);
   overflow: hidden;
+
 }
 
 .project-card__overlay {

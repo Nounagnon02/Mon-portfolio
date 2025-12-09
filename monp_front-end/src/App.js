@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './mes pages/home';
-import Projects from './mes pages/projects';
-import Contact from './mes pages/contact';
-import About from './mes pages/about';
-import Resume from './mes pages/resume';
-import SuperAdminDashboard from './mes pages/superAdminDashboard';
-import CompleteDashboard from './mes pages/CompleteDashboard';
+import Home from './pages/home';
+import Projects from './pages/projects';
+import Contact from './pages/contact';
+import About from './pages/about';
+import Resume from './pages/resume';
+import CompleteDashboard from './pages/CompleteDashboard';
 import './App.css';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/dashboard" element={<CompleteDashboard />} />
-        <Route path="/dashboard-old" element={<SuperAdminDashboard />} />
         <Route path="/*" element={
           <Layout>
             <Routes>

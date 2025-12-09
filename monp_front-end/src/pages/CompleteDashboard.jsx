@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { pagsService, projetctsService, contactsService } from '../services/api';
+import { pageService, projectService, contactService, experienceService } from '../services/api';
 import { imageService } from '../services/imageService';
 import './CompleteDashboard.css';
+import './DashboardProjects.css';
 
 const CompleteDashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -14,6 +15,7 @@ const CompleteDashboard = () => {
   const [backgroundImagePreview, setBackgroundImagePreview] = useState(null);
   
   const [projects, setProjects] = useState([]);
+  const [experiences, setExperiences] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [stats, setStats] = useState({ totalProjects: 0, totalContacts: 0, unreadContacts: 0 });
   
@@ -24,10 +26,17 @@ const CompleteDashboard = () => {
   });
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  
+  const [showExperienceModal, setShowExperienceModal] = useState(false);
+  const [currentExperience, setCurrentExperience] = useState(null);
+  const [experienceForm, setExperienceForm] = useState({
+    title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0
+  });
 
   useEffect(() => {
     if (activeSection === 'pages') loadPageData();
     if (activeSection === 'projects') loadProjects();
+    if (activeSection === 'experiences') loadExperiences();
     if (activeSection === 'contacts') loadContacts();
     if (activeSection === 'dashboard') loadStats();
   }, [activeSection, activeTab]);
@@ -35,13 +44,15 @@ const CompleteDashboard = () => {
   const loadStats = async () => {
     try {
       const [projectsRes, contactsRes] = await Promise.all([
-        projetctsService.getAll(),
-        contactsService.getAll()
+        projectService.getAll(),
+        contactService.getAll()
       ]);
+      const projectsData = projectsRes.data?.data || projectsRes.data || [];
+      const contactsData = contactsRes.data?.data || contactsRes.data || [];
       setStats({
-        totalProjects: projectsRes.data.length,
-        totalContacts: contactsRes.data.length,
-        unreadContacts: contactsRes.data.filter(c => !c.is_read).length
+        totalProjects: Array.isArray(projectsData) ? projectsData.length : 0,
+        totalContacts: Array.isArray(contactsData) ? contactsData.length : 0,
+        unreadContacts: Array.isArray(contactsData) ? contactsData.filter(c => !c.is_read).length : 0
       });
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -50,7 +61,7 @@ const CompleteDashboard = () => {
 
   const loadPageData = async () => {
     try {
-      const response = await pagsService.getByName(activeTab);
+      const response = await pageService.getByName(activeTab);
       const page = response.data;
       setPageId(page.id);
       setHeroData({
@@ -66,7 +77,7 @@ const CompleteDashboard = () => {
       setHasChanges(false);
     } catch (error) {
       if (error.response?.status === 404) {
-        const response = await pagsService.create({ page_name: activeTab });
+        const response = await pageService.create({ page_name: activeTab });
         setPageId(response.data.id);
       }
     }
@@ -75,7 +86,7 @@ const CompleteDashboard = () => {
   const savePageChanges = async () => {
     if (!pageId) return;
     try {
-      await pagsService.update(pageId, {
+      await pageService.update(pageId, {
         hero_headline: heroData.headline,
         hero_subheadline: heroData.subHeadline,
         hero_background_image: heroData.backgroundImage,
@@ -91,10 +102,24 @@ const CompleteDashboard = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await projetctsService.getAll();
-      setProjects(response.data);
+      const response = await projectService.getAll();
+      console.log('Projects response:', response);
+      const projectsData = response.data?.data || response.data || [];
+      setProjects(Array.isArray(projectsData) ? projectsData : []);
     } catch (error) {
       console.error('Error loading projects:', error);
+      setProjects([]);
+    }
+  };
+
+  const loadExperiences = async () => {
+    try {
+      const response = await experienceService.getAll();
+      const experiencesData = response.data?.data || response.data || [];
+      setExperiences(Array.isArray(experiencesData) ? experiencesData : []);
+    } catch (error) {
+      console.error('Error loading experiences:', error);
+      setExperiences([]);
     }
   };
 
@@ -124,9 +149,9 @@ const CompleteDashboard = () => {
       const formData = { ...projectForm, image: imagePath };
       
       if (currentProject) {
-        await projetctsService.update(currentProject.id, formData);
+        await projectService.update(currentProject.id, formData);
       } else {
-        await projetctsService.create(formData);
+        await projectService.create(formData);
       }
       
       setShowProjectModal(false);
@@ -140,10 +165,27 @@ const CompleteDashboard = () => {
     }
   };
 
+  const handleExperienceSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (currentExperience) {
+        await experienceService.update(currentExperience.id, experienceForm);
+      } else {
+        await experienceService.create(experienceForm);
+      }
+      setShowExperienceModal(false);
+      setCurrentExperience(null);
+      setExperienceForm({ title: '', company: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
+      loadExperiences();
+    } catch (error) {
+      alert('Error saving experience');
+    }
+  };
+
   const deleteProject = async (id) => {
     if (window.confirm('Delete this project?')) {
       try {
-        await projetctsService.delete(id);
+        await projectService.delete(id);
         loadProjects();
       } catch (error) {
         alert('Error deleting project');
@@ -151,18 +193,31 @@ const CompleteDashboard = () => {
     }
   };
 
+  const deleteExperience = async (id) => {
+    if (window.confirm('Delete this experience?')) {
+      try {
+        await experienceService.delete(id);
+        loadExperiences();
+      } catch (error) {
+        alert('Error deleting experience');
+      }
+    }
+  };
+
   const loadContacts = async () => {
     try {
-      const response = await contactsService.getAll();
-      setContacts(response.data);
+      const response = await contactService.getAll();
+      const contactsData = response.data?.data || response.data || [];
+      setContacts(Array.isArray(contactsData) ? contactsData : []);
     } catch (error) {
       console.error('Error loading contacts:', error);
+      setContacts([]);
     }
   };
 
   const markAsRead = async (id) => {
     try {
-      await contactsService.update(id, { is_read: true });
+      await contactService.update(id, { is_read: true });
       loadContacts();
     } catch (error) {
       alert('Error updating contact');
@@ -172,7 +227,7 @@ const CompleteDashboard = () => {
   const deleteContact = async (id) => {
     if (window.confirm('Delete this contact?')) {
       try {
-        await contactsService.delete(id);
+        await contactService.delete(id);
         loadContacts();
       } catch (error) {
         alert('Error deleting contact');
@@ -201,6 +256,10 @@ const CompleteDashboard = () => {
               <a href="#" className={`nav-item ${activeSection === 'projects' ? 'active' : ''}`} onClick={() => setActiveSection('projects')}>
                 <span className="material-symbols-outlined">folder</span>
                 <p>Portfolio Projects</p>
+              </a>
+              <a href="#" className={`nav-item ${activeSection === 'experiences' ? 'active' : ''}`} onClick={() => setActiveSection('experiences')}>
+                <span className="material-symbols-outlined">work</span>
+                <p>Experiences</p>
               </a>
               <a href="#" className={`nav-item ${activeSection === 'pages' ? 'active' : ''}`} onClick={() => setActiveSection('pages')}>
                 <span className="material-symbols-outlined">article</span>
@@ -368,6 +427,55 @@ const CompleteDashboard = () => {
             </>
           )}
 
+          {activeSection === 'experiences' && (
+            <>
+              <div className="page-header">
+                <div className="header-text">
+                  <h1 className="page-title">Professional Experiences</h1>
+                  <p className="page-subtitle">Manage your professional experiences</p>
+                </div>
+                <div className="header-actions">
+                  <button className="btn btn-primary" onClick={() => {
+                    setCurrentExperience(null);
+                    setExperienceForm({ title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
+                    setShowExperienceModal(true);
+                  }}>
+                    Add Experience
+                  </button>
+                </div>
+              </div>
+
+              <div className="experiences-list">
+                {Array.isArray(experiences) && experiences.map(exp => (
+                  <div key={exp.id} className="experience-card">
+                    <div className="experience-header">
+                      <div className="experience-info">
+                        <h3>{exp.title}</h3>
+                        <p className="experience-company">{exp.company}</p>
+                        <p className="experience-date">
+                          {new Date(exp.start_date).toLocaleDateString()} - {exp.is_current ? 'Present' : new Date(exp.end_date).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="experience-actions">
+                        <button className="btn btn-secondary btn-sm" onClick={() => {
+                          setCurrentExperience(exp);
+                          setExperienceForm(exp);
+                          setShowExperienceModal(true);
+                        }}>
+                          Edit
+                        </button>
+                        <button className="btn btn-danger btn-sm" onClick={() => deleteExperience(exp.id)}>
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    {exp.description && <p className="experience-description">{exp.description}</p>}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
           {activeSection === 'projects' && (
             <>
               <div className="page-header">
@@ -391,21 +499,21 @@ const CompleteDashboard = () => {
                 </div>
               </div>
 
-              <div className="projects-grid" style={{ display: 'grid !important', gridTemplateColumns: 'repeat(3, 1fr) !important', gap: '1.5rem !important', marginTop: '2rem !important' }}>
-                {projects.map(project => (
-                  <div key={project.id} className="project-card" style={{ display: 'flex !important', flexDirection: 'column !important', background: 'white !important', borderRadius: '0.75rem !important', border: '1px solid #dbeafe !important', overflow: 'hidden !important', boxShadow: '0 1px 3px rgba(59, 130, 246, 0.05) !important' }}>
-                    <div className="project-image">
+              <div className="dashboard-projects-grid">
+                {Array.isArray(projects) && projects.map(project => (
+                  <div key={project.id} className="dashboard-project-card">
+                    <div className="dashboard-project-image">
                       <img src={project.image ? `http://localhost:8000${project.image}` : 'https://via.placeholder.com/300x200'} alt={project.title} />
                     </div>
-                    <div className="project-content">
+                    <div className="dashboard-project-content">
                       <h3>{project.title}</h3>
                       <p>{project.description}</p>
-                      <div className="project-technologies">
+                      <div className="dashboard-project-technologies">
                         {Array.isArray(project.technologies) ? project.technologies.map((tech, index) => (
-                          <span key={index} className="tech-tag">{tech}</span>
+                          <span key={index} className="dashboard-tech-tag">{tech}</span>
                         )) : null}
                       </div>
-                      <div className="project-actions">
+                      <div className="dashboard-project-actions">
                         <button 
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
@@ -486,6 +594,65 @@ const CompleteDashboard = () => {
           )}
         </div>
       </main>
+
+      {showExperienceModal && (
+        <div className="modal-overlay" onClick={() => setShowExperienceModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{currentExperience ? 'Edit Experience' : 'Add New Experience'}</h2>
+              <button className="modal-close" onClick={() => setShowExperienceModal(false)}>×</button>
+            </div>
+            <form onSubmit={handleExperienceSubmit} className="project-form">
+              <div className="form-group">
+                <label>Title</label>
+                <input type="text" value={experienceForm.title} onChange={(e) => setExperienceForm({...experienceForm, title: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Company</label>
+                <input type="text" value={experienceForm.company} onChange={(e) => setExperienceForm({...experienceForm, company: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Position</label>
+                <input type="text" value={experienceForm.position} onChange={(e) => setExperienceForm({...experienceForm, position: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Description</label>
+                <textarea value={experienceForm.description} onChange={(e) => setExperienceForm({...experienceForm, description: e.target.value})} rows="4" />
+              </div>
+              <div className="form-group">
+                <label>Location</label>
+                <input type="text" value={experienceForm.location} onChange={(e) => setExperienceForm({...experienceForm, location: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>Start Date</label>
+                <input type="date" value={experienceForm.start_date} onChange={(e) => setExperienceForm({...experienceForm, start_date: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>End Date</label>
+                <input type="date" value={experienceForm.end_date} onChange={(e) => setExperienceForm({...experienceForm, end_date: e.target.value})} disabled={experienceForm.is_current} />
+              </div>
+              <div className="form-group">
+                <label>
+                  <input type="checkbox" checked={experienceForm.is_current} onChange={(e) => setExperienceForm({...experienceForm, is_current: e.target.checked})} />
+                  Currently working here
+                </label>
+              </div>
+              <div className="form-group">
+                <label>Order</label>
+                <input type="number" value={experienceForm.order} onChange={(e) => setExperienceForm({...experienceForm, order: parseInt(e.target.value) || 0})} min="0" />
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowExperienceModal(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  {currentExperience ? 'Update' : 'Create'} Experience
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {showProjectModal && (
         <div className="modal-overlay" onClick={() => setShowProjectModal(false)}>

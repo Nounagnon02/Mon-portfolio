@@ -5,37 +5,53 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PagsController;
-use App\Http\Controllers\ProjetctsController;
-use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\ExperienceController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Public routes
+// Public routes (for portfolio display)
 Route::get('/pages/{pageName}', [PageController::class, 'show']);
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/experiences', [ExperienceController::class, 'index']);
 Route::post('/contacts', [ContactController::class, 'store']);
 
-// Protected routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/pages', [PageController::class, 'store']);
-    Route::put('/pages/{page}', [PageController::class, 'update']);
-    
-    Route::post('/projects', [ProjectController::class, 'store']);
-    Route::put('/projects/{project}', [ProjectController::class, 'update']);
-    Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
-    
-    Route::get('/contacts', [ContactController::class, 'index']);
-    Route::put('/contacts/{contact}/read', [ContactController::class, 'markAsRead']);
-});
+/*
+|--------------------------------------------------------------------------
+| Dashboard Routes (Currently Public - TODO: Add Authentication)
+|--------------------------------------------------------------------------
+| WARNING: These routes are currently public for development.
+| In production, implement proper authentication (Laravel Sanctum/Fortify)
+| and move these routes back to the protected group.
+*/
 
-Route::apiResource('pags', PagsController::class);
-Route::get('pags/name/{name}', [PagsController::class, 'show']);
-Route::apiResource('projetcts', ProjetctsController::class);
-Route::apiResource('contactss', ContactsController::class);
+// Pages Management (Dashboard)
+Route::get('/pages', [PageController::class, 'index']);
+Route::post('/pages', [PageController::class, 'store']);
+Route::put('/pages/{page}', [PageController::class, 'update']);
+Route::delete('/pages/{page}', [PageController::class, 'destroy']);
 
-// Image upload routes
-Route::post('/upload-image', [App\Http\Controllers\ImageUploadController::class, 'upload']);
-Route::delete('/delete-image', [App\Http\Controllers\ImageUploadController::class, 'delete']);
+// Projects Management (Dashboard)
+Route::get('/projects/{project}', [ProjectController::class, 'show']);
+Route::post('/projects', [ProjectController::class, 'store']);
+Route::put('/projects/{project}', [ProjectController::class, 'update']);
+Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);
+
+// Experiences Management (Dashboard)
+Route::get('/experiences/{experience}', [ExperienceController::class, 'show']);
+Route::post('/experiences', [ExperienceController::class, 'store']);
+Route::put('/experiences/{experience}', [ExperienceController::class, 'update']);
+Route::delete('/experiences/{experience}', [ExperienceController::class, 'destroy']);
+
+// Contacts Management (Dashboard)
+Route::get('/contacts', [ContactController::class, 'index']);
+Route::get('/contacts/{contact}', [ContactController::class, 'show']);
+Route::put('/contacts/{contact}', [ContactController::class, 'update']);
+Route::put('/contacts/{contact}/read', [ContactController::class, 'markAsRead']);
+Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
+
+// Image Upload (Dashboard)
+Route::post('/upload-image', [ImageUploadController::class, 'upload']);
+Route::delete('/delete-image', [ImageUploadController::class, 'delete']);

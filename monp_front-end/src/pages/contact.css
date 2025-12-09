@@ -21,7 +21,6 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
-  --space-20: 5rem;
   
   /* Font Sizes */
   --font-size-base: 1rem;
@@ -110,11 +109,12 @@
 .form-textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   border-radius: 0.5rem;
   font-size: 1rem;
   background: #ffffff !important;
   color: #374151;
+  transition: border-color 0.2s;
 }
 
 .form-input::placeholder,
@@ -124,13 +124,28 @@
 
 .form-input:focus,
 .form-textarea:focus {
-  outline: none;
-  border-color: #1e40af;
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-color: #3b82f6;
 }
 
-.form-textarea {
-  resize: vertical;
-  min-height: 120px;
+.form-input--error,
+.form-textarea--error {
+  border-color: #dc2626;
+}
+
+.form-error {
+  display: block;
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-counter {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.25rem;
+  text-align: right;
 }
 
 .btn {
@@ -142,11 +157,22 @@
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s;
+  min-height: 44px;
 }
 
-.btn:hover {
+.btn:hover:not(:disabled) {
   background: #333;
   transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .btn--large {
@@ -173,10 +199,21 @@
 .social-link {
   color: #666;
   transition: color 0.3s;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .social-link:hover {
   color: #1e40af;
+}
+
+.social-link:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
 }
 
 .social-icon {

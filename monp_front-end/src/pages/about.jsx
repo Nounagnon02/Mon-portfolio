@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { pagsService } from '../services/api';
+import { pageService, experienceService } from '../services/api';
 import "./about.css";
 
 // ========================================
@@ -107,17 +107,29 @@ export default function About() {
     hero_subheadline: "I am a passionate full-stack developer with a knack for creating beautiful and functional web applications. I thrive on solving complex problems and am dedicated to writing clean, efficient, and scalable code.",
     hero_background_image: "/images/Prince.jpeg"
   });
+  const [experiences, setExperiences] = useState([]);
 
   useEffect(() => {
     loadPageData();
+    loadExperiences();
   }, []);
 
   const loadPageData = async () => {
     try {
-      const response = await pagsService.getByName('about');
+      const response = await pageService.getByName('about');
       setPageData(response.data);
     } catch (error) {
       console.log('Using default content');
+    }
+  };
+
+  const loadExperiences = async () => {
+    try {
+      const response = await experienceService.getAll();
+      const experiencesData = response.data?.data || response.data || [];
+      setExperiences(Array.isArray(experiencesData) ? experiencesData.sort((a, b) => a.order - b.order) : []);
+    } catch (error) {
+      console.error('Error loading experiences:', error);
     }
   };
 
@@ -132,24 +144,6 @@ export default function About() {
     { icon: "dns", title: "SQL", desc: "Database" },
     { icon: "layers", title: "Docker", desc: "DevOps" },
     { icon: "cloud", title: "AWS", desc: "Cloud" },
-  ];
-
-  const experiences = [
-    {
-      title: "Senior Software Engineer at Tech Corp",
-      date: "2020 - Present",
-      desc: "Led the development of a high-traffic e-commerce platform using React and Node.js. Mentored junior developers and improved code quality through rigorous code reviews and best practices."
-    },
-    {
-      title: "Software Engineer at Innovate LLC",
-      date: "2018 - 2020",
-      desc: "Contributed to building a SaaS application from scratch. Implemented key features on both front-end and back-end, working with Python (Django) and Vue.js. Deployed applications using Docker and AWS."
-    },
-    {
-      title: "Junior Developer at Web Solutions",
-      date: "2016 - 2018",
-      desc: "Developed and maintained client websites using HTML, CSS, and JavaScript. Gained foundational experience in web development and version control with Git."
-    },
   ];
 
   const projects = [
@@ -211,15 +205,19 @@ export default function About() {
       <section className="section">
         <SectionTitle>Experience</SectionTitle>
         <div className="experience-list">
-          {experiences.map((exp, idx) => (
-            <ExperienceItem
-              key={idx}
-              title={exp.title}
-              date={exp.date}
-              description={exp.desc}
-              isLast={idx === experiences.length - 1}
-            />
-          ))}
+          {experiences.length > 0 ? (
+            experiences.map((exp, idx) => (
+              <ExperienceItem
+                key={exp.id}
+                title={`${exp.title} at ${exp.company}`}
+                date={`${new Date(exp.start_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - ${exp.is_current ? 'Present' : new Date(exp.end_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}
+                description={exp.description}
+                isLast={idx === experiences.length - 1}
+              />
+            ))
+          ) : (
+            <p>No experiences yet.</p>
+          )}
         </div>
       </section>
     </div>

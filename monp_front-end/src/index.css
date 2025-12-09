@@ -8,8 +8,8 @@
 .justify-between { justify-content: space-between; }
 .text-center { text-align: center; }
 .text-white { color: white; }
-.text-#1e40af { color: #1e40af; }
-.bg-#1e40af { background-color: #1e40af; }
+.text-primary { color: #1e40af; }
+.bg-primary { background-color: #1e40af; }
 .bg-gray-100 { background-color: #f3f4f6; }
 .bg-white { background-color: white; }
 .p-4 { padding: 1rem; }
@@ -22,7 +22,7 @@
 .rounded { border-radius: 0.25rem; }
 .rounded-lg { border-radius: 0.5rem; }
 .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
-.hover\:bg-gray-800:hover { background-color: #333; }
+.bg-gray-800-hover:hover { background-color: #333; }
 .transition { transition: all 0.15s ease-in-out; }
 
 

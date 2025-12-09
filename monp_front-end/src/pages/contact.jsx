@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { contactService, pagsService } from '../services/api';
+import { contactService, pageService } from '../services/api';
+import { useToast, Toast } from '../components/Toast';
+import { getErrorMessage } from '../utils/errorHandler';
+import { validators, sanitize, validateForm } from '../utils/validation';
 import "./contact.css";
 
-const Logo = () => (
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="logo-icon">
-    <path
-      fill="currentColor"
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z"
-    />
-  </svg>
-);
-
-const NavLink = ({ href, children, isActive = false }) => (
-  <a href={href} className={`nav-link ${isActive ? "nav-link--active" : ""}`}>
-    {children}
-  </a>
-);
-
-const Button = ({ children, type = "button", variant = "#1173d4", size = "medium", fullWidth = false, onClick }) => (
+const Button = ({ children, type = "button", variant = "#1173d4", size = "medium", fullWidth = false, onClick, disabled = false, ariaLabel }) => (
   <button
     type={type}
     onClick={onClick}
+    disabled={disabled}
+    aria-label={ariaLabel}
     className={`btn btn--${variant} btn--${size} ${fullWidth ? "btn--full" : ""}`}
   >
     {children}
   </button>
 );
 
-const FormInput = ({ id, label, type = "text", placeholder, value, onChange }) => (
+const FormInput = ({ id, label, type = "text", placeholder, value, onChange, error, maxLength }) => (
   <div className="form-group">
     <label htmlFor={id} className="form-label">{label}</label>
     <input
@@ -38,12 +26,16 @@ const FormInput = ({ id, label, type = "text", placeholder, value, onChange }) =
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className="form-input"
+      maxLength={maxLength}
+      className={`form-input ${error ? 'form-input--error' : ''}`}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
     />
+    {error && <span id={`${id}-error`} className="form-error">{error}</span>}
   </div>
 );
 
-const FormTextarea = ({ id, label, placeholder, value, onChange }) => (
+const FormTextarea = ({ id, label, placeholder, value, onChange, error, maxLength }) => (
   <div className="form-group">
     <label htmlFor={id} className="form-label">{label}</label>
     <textarea
@@ -51,8 +43,13 @@ const FormTextarea = ({ id, label, placeholder, value, onChange }) => (
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className="form-textarea"
+      maxLength={maxLength}
+      className={`form-textarea ${error ? 'form-textarea--error' : ''}`}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
     />
+    <div className="form-counter">{value.length}/{maxLength}</div>
+    {error && <span id={`${id}-error`} className="form-error">{error}</span>}
   </div>
 );
 
@@ -91,11 +88,13 @@ export default function Contact() {
     subject: "",
     message: ""
   });
-  const [copied, setCopied] = useState(false);
+  const [errors, setErrors] = useState({});
   const [pageData, setPageData] = useState({
     hero_headline: "Get in Touch",
     hero_subheadline: "I'm always open to discussing new projects or opportunities. Let's connect!"
   });
+  const { toasts, addToast, removeToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     loadPageData();
@@ -103,19 +102,12 @@ export default function Contact() {
 
   const loadPageData = async () => {
     try {
-      const response = await pagsService.getByName('contact');
+      const response = await pageService.getByName('contact');
       setPageData(response.data);
     } catch (error) {
       console.log('Using default content');
     }
   };
-
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/projects", label: "Projects" },
-    { href: "/contact", label: "Contact", isActive: true }
-  ];
 
   const socialLinks = [
     { href: "https://github.com", icon: <GitHubIcon />, label: "GitHub" },
@@ -124,29 +116,53 @@ export default function Contact() {
   ];
 
   const handleChange = (field) => (e) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: null }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await contactService.send(formData);
-      alert('Message sent successfully!');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      alert('Error sending message');
+    
+    const validationErrors = validateForm(formData, ['name', 'email', 'subject', 'message']);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      addToast('Veuillez corriger les erreurs du formulaire', 'error');
+      return;
     }
-  };
-
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    
+    setIsLoading(true);
+    try {
+      const sanitizedData = {
+        name: sanitize(formData.name),
+        email: sanitize(formData.email),
+        subject: sanitize(formData.subject),
+        message: sanitize(formData.message)
+      };
+      await contactService.send(sanitizedData);
+      addToast('Message envoyé avec succès!', 'success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
+    } catch (error) {
+      addToast(getErrorMessage(error), 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="contact-section">
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
       <section className="contact-hero">
         <h1 className="contact-hero__title">{pageData.hero_headline || "Get in Touch"}</h1>
         <p className="contact-hero__subtitle">
@@ -163,6 +179,8 @@ export default function Contact() {
               placeholder="Enter your name"
               value={formData.name}
               onChange={handleChange("name")}
+              error={errors.name}
+              maxLength={255}
             />
             <FormInput
               id="email"
@@ -171,6 +189,8 @@ export default function Contact() {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange("email")}
+              error={errors.email}
+              maxLength={255}
             />
           </div>
           <FormInput
@@ -179,6 +199,8 @@ export default function Contact() {
             placeholder="Enter the subject"
             value={formData.subject}
             onChange={handleChange("subject")}
+            error={errors.subject}
+            maxLength={255}
           />
           <FormTextarea
             id="message"
@@ -186,9 +208,16 @@ export default function Contact() {
             placeholder="Enter your message"
             value={formData.message}
             onChange={handleChange("message")}
+            error={errors.message}
+            maxLength={5000}
           />
-          <Button type="submit" size="large">
-            Send Message
+          <Button 
+            type="submit" 
+            size="large" 
+            disabled={isLoading}
+            ariaLabel={isLoading ? 'Envoi du message en cours' : 'Envoyer le message'}
+          >
+            {isLoading ? 'Envoi...' : 'Send Message'}
           </Button>
         </form>
       </section>

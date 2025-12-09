@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// Base URL from environment or fallback to localhost
-export const urlBase =  'http://localhost:8000/api';
+export const urlBase = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
-// Axios instance with baseURL
 const api = axios.create({
   baseURL: urlBase,
   headers: {
@@ -12,23 +10,21 @@ const api = axios.create({
   }
 });
 
-// Intercepteur pour ajouter le token et ecole_id
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    const ecoleId = localStorage.getItem('ecole_id');
+api.interceptors.response.use(
+  response => response,
+  error => {
+    const endpoint = error.config?.url || 'unknown';
+    const method = error.config?.method?.toUpperCase() || 'unknown';
+    const status = error.response?.status || 'no response';
     
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    console.error(`API Error [${method} ${endpoint}]:`, {
+      status,
+      message: error.message,
+      data: error.response?.data
+    });
     
-    if (ecoleId) {
-      config.headers['X-Ecole-Id'] = ecoleId;
-    }
-    
-    return config;
-  },
-  (error) => Promise.reject(error)
+    return Promise.reject(error);
+  }
 );
 
 export default api;

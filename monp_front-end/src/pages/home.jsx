@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { pagsService } from '../services/api';
+import { pageService } from '../services/api';
+import { useToast, Toast } from '../components/Toast';
+import { getErrorMessage } from '../utils/errorHandler';
 import "./home.css";
 
 const Logo = () => (
@@ -44,12 +46,14 @@ export default function Home() {
     loadPageData();
   }, []);
 
+  const { toasts, addToast, removeToast } = useToast();
+
   const loadPageData = async () => {
     try {
-      const response = await pagsService.getByName('home');
-      setPageData(response.data);
+      const response = await pageService.getByName('home');
+      setPageData(response.data.data || response.data);
     } catch (error) {
-      console.log('Using default content');
+      console.log('Utilisation du contenu par défaut');
     }
   };
 
@@ -79,6 +83,14 @@ export default function Home() {
 
   return (
     <div className="home-page">
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
       <section className="hero-section">
         <div className="hero__container">
           <div className="hero__content">
