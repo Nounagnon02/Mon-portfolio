@@ -1,49 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { experienceService } from '../services/experienceService';
+import { skillService } from '../services/skillService';
 import './resume.css';
 
 const Resume = () => {
-  const experiences = [
-    {
-      title: 'Senior Full-Stack Developer',
-      company: 'Tech Solutions Inc.',
-      period: '2022 - Present',
-      description: 'Développement d\'applications web complexes avec React, Node.js et MongoDB. Leadership technique d\'une équipe de 5 développeurs.'
-    },
-    {
-      title: 'Full-Stack Developer',
-      company: 'Digital Agency',
-      period: '2020 - 2022',
-      description: 'Création de sites web et applications mobiles. Spécialisation en React, Laravel et bases de données relationnelles.'
-    },
-    {
-      title: 'Junior Developer',
-      company: 'StartUp Innovation',
-      period: '2018 - 2020',
-      description: 'Développement front-end et back-end. Apprentissage des bonnes pratiques et méthodologies agiles.'
-    }
-  ];
+  const [experiences, setExperiences] = useState([]);
+  const [skills, setSkills] = useState([]);
 
-  const education = [
-    {
-      degree: 'Master en Informatique',
-      school: 'Université de Technologie',
-      period: '2016 - 2018',
-      description: 'Spécialisation en développement web et intelligence artificielle'
-    },
-    {
-      degree: 'Licence en Informatique',
-      school: 'Institut Supérieur de Technologie',
-      period: '2013 - 2016',
-      description: 'Formation générale en informatique et programmation'
-    }
-  ];
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  const skills = [
-    { category: 'Frontend', items: ['React', 'Vue.js', 'JavaScript', 'TypeScript', 'HTML5', 'CSS3'] },
-    { category: 'Backend', items: ['Node.js', 'Laravel', 'Python', 'PHP', 'Express.js'] },
-    { category: 'Database', items: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis'] },
-    { category: 'Tools', items: ['Git', 'Docker', 'AWS', 'Vercel', 'Figma'] }
-  ];
+  const loadData = async () => {
+    try {
+      const [expRes, skillRes] = await Promise.all([
+        experienceService.getAll(),
+        skillService.getAll()
+      ]);
+      setExperiences(expRes.data || []);
+      setSkills(skillRes.data || []);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  };
+
+  const professionalExp = experiences.filter(e => e.type === 'professional');
+  const competitions = experiences.filter(e => e.type === 'competition');
+  const hackathons = experiences.filter(e => e.type === 'hackathon');
+  const education = experiences.filter(e => e.type === 'education');
+
+  const skillsByCategory = skills.reduce((acc, skill) => {
+    if (!acc[skill.category]) acc[skill.category] = [];
+    acc[skill.category].push(skill);
+    return acc;
+  }, {});
+
+  const ExperienceSection = ({ title, items }) => (
+    <section className="resume-section">
+      <h2 className="section-title">{title}</h2>
+      <div className="timeline">
+        {items.length > 0 ? (
+          items.map((exp) => (
+            <div key={exp.id} className="experience-item">
+              <div className="experience-date">
+                {new Date(exp.start_date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}
+                {exp.end_date ? ` - ${new Date(exp.end_date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}` : ' - Présent'}
+              </div>
+              <div className="experience-content">
+                <h3 className="experience-title">{exp.title}</h3>
+                <h4 className="experience-company">{exp.company}</h4>
+                {exp.position && <p className="experience-position">{exp.position}</p>}
+                {exp.location && <p className="experience-location">{exp.location}</p>}
+                {exp.description && <p className="experience-description">{exp.description}</p>}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>Aucune donnée disponible</p>
+        )}
+      </div>
+    </section>
+  );
 
   return (
     <div className="resume-container">
@@ -57,53 +74,28 @@ const Resume = () => {
         </div>
       </div>
 
-      <section className="resume-section">
-        <h2 className="section-title">Expérience Professionnelle</h2>
-        <div className="timeline">
-          {experiences.map((exp, index) => (
-            <div key={index} className="experience-item">
-              <div className="experience-date">{exp.period}</div>
-              <div className="experience-content">
-                <h3 className="experience-title">{exp.title}</h3>
-                <h4 className="experience-company">{exp.company}</h4>
-                <p className="experience-description">{exp.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {professionalExp.length > 0 && <ExperienceSection title="Expérience Professionnelle" items={professionalExp} />}
+      {hackathons.length > 0 && <ExperienceSection title="Hackathons" items={hackathons} />}
+      {competitions.length > 0 && <ExperienceSection title="Compétitions" items={competitions} />}
+      {education.length > 0 && <ExperienceSection title="Formation" items={education} />}
 
-      <section className="resume-section">
-        <h2 className="section-title">Formation</h2>
-        <div className="timeline">
-          {education.map((edu, index) => (
-            <div key={index} className="experience-item">
-              <div className="experience-date">{edu.period}</div>
-              <div className="experience-content">
-                <h3 className="experience-title">{edu.degree}</h3>
-                <h4 className="experience-company">{edu.school}</h4>
-                <p className="experience-description">{edu.description}</p>
+      {Object.keys(skillsByCategory).length > 0 && (
+        <section className="resume-section">
+          <h2 className="section-title">Compétences Techniques</h2>
+          <div className="skills-grid">
+            {Object.entries(skillsByCategory).map(([category, categorySkills]) => (
+              <div key={category} className="skill-group">
+                <h3 className="skill-category">{category}</h3>
+                <div className="skill-tags">
+                  {categorySkills.map((skill) => (
+                    <span key={skill.id} className="skill-tag">{skill.name}</span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="resume-section">
-        <h2 className="section-title">Compétences Techniques</h2>
-        <div className="skills-grid">
-          {skills.map((skillGroup, index) => (
-            <div key={index} className="skill-group">
-              <h3 className="skill-category">{skillGroup.category}</h3>
-              <div className="skill-tags">
-                {skillGroup.items.map((skill, skillIndex) => (
-                  <span key={skillIndex} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

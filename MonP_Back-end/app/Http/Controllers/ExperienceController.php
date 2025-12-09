@@ -9,35 +9,58 @@ class ExperienceController extends Controller
 {
     public function index()
     {
-        try {
-            return Experience::orderBy('order')->get();
-        } catch (\Exception $e) {
-            return response()->json([]);
-        }
+        return response()->json(Experience::orderBy('order')->get());
     }
 
-    public function show(Experience $experience)
+    public function show($id)
     {
-        return $experience;
+        $experience = Experience::findOrFail($id);
+        return response()->json($experience);
     }
 
     public function store(Request $request)
     {
-        try {
-            return Experience::create($request->all());
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $validated = $request->validate([
+            'type' => 'required|in:professional,competition,hackathon,education',
+            'title' => 'required|string',
+            'company' => 'required|string',
+            'position' => 'nullable|string',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'is_current' => 'nullable|boolean',
+            'order' => 'nullable|integer'
+        ]);
+
+        $experience = Experience::create($validated);
+        return response()->json($experience, 201);
     }
 
-    public function update(Request $request, Experience $experience)
+    public function update(Request $request, $id)
     {
-        $experience->update($request->all());
-        return $experience;
+        $experience = Experience::findOrFail($id);
+        
+        $validated = $request->validate([
+            'type' => 'sometimes|in:professional,competition,hackathon,education',
+            'title' => 'sometimes|string',
+            'company' => 'sometimes|string',
+            'position' => 'nullable|string',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string',
+            'start_date' => 'sometimes|date',
+            'end_date' => 'nullable|date',
+            'is_current' => 'nullable|boolean',
+            'order' => 'nullable|integer'
+        ]);
+
+        $experience->update($validated);
+        return response()->json($experience);
     }
 
-    public function destroy(Experience $experience)
+    public function destroy($id)
     {
+        $experience = Experience::findOrFail($id);
         $experience->delete();
         return response()->json(null, 204);
     }

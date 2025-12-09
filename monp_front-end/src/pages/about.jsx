@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { pageService, experienceService } from '../services/api';
+import { skillService } from '../services/skillService';
 import "./about.css";
 
 // ========================================
@@ -108,10 +109,12 @@ export default function About() {
     hero_background_image: "/images/Prince.jpeg"
   });
   const [experiences, setExperiences] = useState([]);
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     loadPageData();
     loadExperiences();
+    loadSkills();
   }, []);
 
   const loadPageData = async () => {
@@ -133,18 +136,23 @@ export default function About() {
     }
   };
 
+  const loadSkills = async () => {
+    try {
+      const response = await skillService.getAll();
+      const skillsData = response.data || [];
+      setSkills(Array.isArray(skillsData) ? skillsData : []);
+    } catch (error) {
+      console.error('Error loading skills:', error);
+    }
+  };
+
   const navLinks = ["About", "Skills", "Experience", "Projects", "Contact"];
 
-  const skills = [
-    { icon: "code", title: "JavaScript", desc: "Front-end" },
-    { icon: "code", title: "Python", desc: "Back-end" },
-    { icon: "developer_mode", title: "React", desc: "Front-end" },
-    { icon: "hub", title: "Node.js", desc: "Back-end" },
-    { icon: "database", title: "MongoDB", desc: "Database" },
-    { icon: "dns", title: "SQL", desc: "Database" },
-    { icon: "layers", title: "Docker", desc: "DevOps" },
-    { icon: "cloud", title: "AWS", desc: "Cloud" },
-  ];
+  const skillsByCategory = skills.reduce((acc, skill) => {
+    if (!acc[skill.category]) acc[skill.category] = [];
+    acc[skill.category].push(skill);
+    return acc;
+  }, {});
 
   const projects = [
     {
@@ -191,14 +199,18 @@ export default function About() {
       <section className="section">
         <SectionTitle>Skills</SectionTitle>
         <div className="skills-grid">
-          {skills.map((skill, idx) => (
-            <SkillCard
-              key={idx}
-              icon={skill.icon}
-              title={skill.title}
-              description={skill.desc}
-            />
-          ))}
+          {skills.length > 0 ? (
+            skills.map((skill) => (
+              <SkillCard
+                key={skill.id}
+                icon="code"
+                title={skill.name}
+                description={skill.category}
+              />
+            ))
+          ) : (
+            <p>No skills yet.</p>
+          )}
         </div>
       </section>
 

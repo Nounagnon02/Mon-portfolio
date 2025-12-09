@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { pageService, projectService, contactService, experienceService } from '../services/api';
 import { imageService } from '../services/imageService';
+import { skillService } from '../services/skillService';
 import './CompleteDashboard.css';
 import './DashboardProjects.css';
 
@@ -16,6 +17,7 @@ const CompleteDashboard = () => {
   
   const [projects, setProjects] = useState([]);
   const [experiences, setExperiences] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [stats, setStats] = useState({ totalProjects: 0, totalContacts: 0, unreadContacts: 0 });
   
@@ -30,13 +32,20 @@ const CompleteDashboard = () => {
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [currentExperience, setCurrentExperience] = useState(null);
   const [experienceForm, setExperienceForm] = useState({
-    title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0
+    type: 'professional', title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0
+  });
+  
+  const [showSkillModal, setShowSkillModal] = useState(false);
+  const [currentSkill, setCurrentSkill] = useState(null);
+  const [skillForm, setSkillForm] = useState({
+    category: '', name: '', order: 0
   });
 
   useEffect(() => {
     if (activeSection === 'pages') loadPageData();
     if (activeSection === 'projects') loadProjects();
     if (activeSection === 'experiences') loadExperiences();
+    if (activeSection === 'skills') loadSkills();
     if (activeSection === 'contacts') loadContacts();
     if (activeSection === 'dashboard') loadStats();
   }, [activeSection, activeTab]);
@@ -175,7 +184,7 @@ const CompleteDashboard = () => {
       }
       setShowExperienceModal(false);
       setCurrentExperience(null);
-      setExperienceForm({ title: '', company: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
+      setExperienceForm({ type: 'professional', title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
       loadExperiences();
     } catch (error) {
       alert('Error saving experience');
@@ -201,6 +210,15 @@ const CompleteDashboard = () => {
       } catch (error) {
         alert('Error deleting experience');
       }
+    }
+  };
+
+  const loadSkills = async () => {
+    try {
+      const response = await skillService.getAll();
+      setSkills(response.data || []);
+    } catch (error) {
+      console.error('Error loading skills:', error);
     }
   };
 
@@ -260,6 +278,10 @@ const CompleteDashboard = () => {
               <a href="#" className={`nav-item ${activeSection === 'experiences' ? 'active' : ''}`} onClick={() => setActiveSection('experiences')}>
                 <span className="material-symbols-outlined">work</span>
                 <p>Experiences</p>
+              </a>
+              <a href="#" className={`nav-item ${activeSection === 'skills' ? 'active' : ''}`} onClick={() => setActiveSection('skills')}>
+                <span className="material-symbols-outlined">star</span>
+                <p>Skills</p>
               </a>
               <a href="#" className={`nav-item ${activeSection === 'pages' ? 'active' : ''}`} onClick={() => setActiveSection('pages')}>
                 <span className="material-symbols-outlined">article</span>
@@ -437,7 +459,7 @@ const CompleteDashboard = () => {
                 <div className="header-actions">
                   <button className="btn btn-primary" onClick={() => {
                     setCurrentExperience(null);
-                    setExperienceForm({ title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
+                    setExperienceForm({ type: 'professional', title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0 });
                     setShowExperienceModal(true);
                   }}>
                     Add Experience
@@ -549,6 +571,53 @@ const CompleteDashboard = () => {
             </>
           )}
 
+          {activeSection === 'skills' && (
+            <>
+              <div className="page-header">
+                <div className="header-text">
+                  <h1 className="page-title">Skills</h1>
+                  <p className="page-subtitle">Manage your technical skills</p>
+                </div>
+                <div className="header-actions">
+                  <button className="btn btn-primary" onClick={() => {
+                    setCurrentSkill(null);
+                    setSkillForm({ category: '', name: '', order: 0 });
+                    setShowSkillModal(true);
+                  }}>
+                    Add Skill
+                  </button>
+                </div>
+              </div>
+
+              <div className="skills-list">
+                {Array.isArray(skills) && skills.map(skill => (
+                  <div key={skill.id} className="skill-item">
+                    <div className="skill-info">
+                      <h3>{skill.name}</h3>
+                      <p className="skill-category">{skill.category}</p>
+                    </div>
+                    <div className="skill-actions">
+                      <button className="btn btn-secondary btn-sm" onClick={() => {
+                        setCurrentSkill(skill);
+                        setSkillForm(skill);
+                        setShowSkillModal(true);
+                      }}>
+                        Edit
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => {
+                        if (window.confirm('Delete this skill?')) {
+                          skillService.delete(skill.id).then(() => loadSkills());
+                        }
+                      }}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
           {activeSection === 'contacts' && (
             <>
               <div className="page-header">
@@ -595,6 +664,55 @@ const CompleteDashboard = () => {
         </div>
       </main>
 
+      {showSkillModal && (
+        <div className="modal-overlay" onClick={() => setShowSkillModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{currentSkill ? 'Edit Skill' : 'Add New Skill'}</h2>
+              <button className="modal-close" onClick={() => setShowSkillModal(false)}>×</button>
+            </div>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (currentSkill) {
+                skillService.update(currentSkill.id, skillForm).then(() => {
+                  setShowSkillModal(false);
+                  setCurrentSkill(null);
+                  setSkillForm({ category: '', name: '', order: 0 });
+                  loadSkills();
+                });
+              } else {
+                skillService.create(skillForm).then(() => {
+                  setShowSkillModal(false);
+                  setSkillForm({ category: '', name: '', order: 0 });
+                  loadSkills();
+                });
+              }
+            }} className="project-form">
+              <div className="form-group">
+                <label>Category</label>
+                <input type="text" value={skillForm.category} onChange={(e) => setSkillForm({...skillForm, category: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Skill Name</label>
+                <input type="text" value={skillForm.name} onChange={(e) => setSkillForm({...skillForm, name: e.target.value})} required />
+              </div>
+              <div className="form-group">
+                <label>Order</label>
+                <input type="number" value={skillForm.order} onChange={(e) => setSkillForm({...skillForm, order: parseInt(e.target.value) || 0})} min="0" />
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowSkillModal(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  {currentSkill ? 'Update' : 'Create'} Skill
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showExperienceModal && (
         <div className="modal-overlay" onClick={() => setShowExperienceModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -603,6 +721,15 @@ const CompleteDashboard = () => {
               <button className="modal-close" onClick={() => setShowExperienceModal(false)}>×</button>
             </div>
             <form onSubmit={handleExperienceSubmit} className="project-form">
+              <div className="form-group">
+                <label>Type</label>
+                <select value={experienceForm.type} onChange={(e) => setExperienceForm({...experienceForm, type: e.target.value})} required>
+                  <option value="professional">Expérience Professionnelle</option>
+                  <option value="competition">Compétition</option>
+                  <option value="hackathon">Hackathon</option>
+                  <option value="education">Formation</option>
+                </select>
+              </div>
               <div className="form-group">
                 <label>Title</label>
                 <input type="text" value={experienceForm.title} onChange={(e) => setExperienceForm({...experienceForm, title: e.target.value})} required />

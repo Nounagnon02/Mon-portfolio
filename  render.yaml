@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: laravel-api
+    env: docker
+    dockerfilePath: ./MonP_Back-end/Dockerfile
+    dockerContext: ./MonP_Back-end
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: Laravel
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: debug
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: histories_6eia
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: histories_6eia
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: histories_6eia
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: histories_6eia
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: histories_6eia
+          property: password
+      - key: FRONTEND_URL
+        sync: false
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+

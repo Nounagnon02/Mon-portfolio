@@ -10,12 +10,21 @@ class Experience extends Model
     use HasFactory;
 
     protected $fillable = [
+        'type',
         'title',
         'company',
         'position',
         'description',
+        'location',
         'start_date',
         'end_date',
+        'is_current',
         'order'
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'is_current' => 'boolean'
     ];
 }

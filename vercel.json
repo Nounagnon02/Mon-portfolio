@@ -1,0 +1,16 @@
+{
+  "buildCommand": "cd monp_front-end && npm run build",
+  "outputDirectory": "monp_front-end/build",
+  "devCommand": "cd monp_front-end && npm run dev",
+  "installCommand": "cd monp_front-end && npm install",
+  "framework": "create-react-app",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_API_URL": "https://your-laravel-api.onrender.com"
+  }
+}

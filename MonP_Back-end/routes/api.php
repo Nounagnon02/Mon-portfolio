@@ -7,6 +7,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\SkillController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -16,6 +17,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/pages/{pageName}', [PageController::class, 'show']);
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::get('/experiences', [ExperienceController::class, 'index']);
+Route::get('/skills', [SkillController::class, 'index']);
 Route::post('/contacts', [ContactController::class, 'store']);
 
 /*
@@ -51,6 +53,11 @@ Route::get('/contacts/{contact}', [ContactController::class, 'show']);
 Route::put('/contacts/{contact}', [ContactController::class, 'update']);
 Route::put('/contacts/{contact}/read', [ContactController::class, 'markAsRead']);
 Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
+
+// Skills Management (Dashboard)
+Route::post('/skills', [SkillController::class, 'store']);
+Route::put('/skills/{skill}', [SkillController::class, 'update']);
+Route::delete('/skills/{skill}', [SkillController::class, 'destroy']);
 
 // Image Upload (Dashboard)
 Route::post('/upload-image', [ImageUploadController::class, 'upload']);
