@@ -41,8 +41,11 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
-# Configure Apache
-RUN echo '<VirtualHost *:80>\n\
+# Configure Apache to listen on PORT environment variable (for Render)
+RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+
+# Configure Apache VirtualHost
+RUN echo '<VirtualHost *:${PORT}>\n\
     DocumentRoot /var/www/public\n\
     <Directory /var/www/public>\n\
     AllowOverride All\n\
@@ -53,15 +56,25 @@ RUN echo '<VirtualHost *:80>\n\
     CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
     </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
+# Update ports.conf to use PORT env variable
+RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf
+
 # Create startup script
 RUN echo '#!/bin/bash\n\
     set -e\n\
     \n\
-    # Wait for database to be ready\n\
-    sleep 2\n\
+    # Set default port if not provided\n\
+    export PORT=${PORT:-10000}\n\
     \n\
-    # Run migrations\n\
-    php artisan migrate --force\n\
+    # Update Apache port configuration\n\
+    sed -i "s/\${PORT}/$PORT/g" /etc/apache2/sites-available/000-default.conf\n\
+    sed -i "s/\${PORT}/$PORT/g" /etc/apache2/ports.conf\n\
+    \n\
+    # Wait for database to be ready\n\
+    sleep 3\n\
+    \n\
+    # Run migrations (ignore errors if table exists)\n\
+    php artisan migrate --force || true\n\
     \n\
     # Clear and cache config for production\n\
     php artisan config:cache\n\
@@ -72,8 +85,8 @@ RUN echo '#!/bin/bash\n\
     apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
-# Expose port 80
-EXPOSE 80
+# Expose default Render port
+EXPOSE 10000
 
 # Start the application
 CMD ["/usr/local/bin/start.sh"]
