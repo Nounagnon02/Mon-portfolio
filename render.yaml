@@ -15,7 +15,7 @@ services:
       - key: APP_KEY
         sync: false
       - key: APP_URL
-        value: https://mon-portfolio-m5x4.onrender.com
+        value: https://mon-portfolio-1-i7oe.onrender.com
       - key: LOG_CHANNEL
         value: stderr
       - key: LOG_LEVEL
@@ -48,3 +48,7 @@ services:
         value: file
       - key: QUEUE_CONNECTION
         value: sync
+      - key: CACHE_DRIVER
+        value: file
+      - key: DB_SSLMODE
+        value: require
