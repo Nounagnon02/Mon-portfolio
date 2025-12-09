@@ -19,10 +19,9 @@ return [
 
     'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 
-   'allowed_origins' => [
+    'allowed_origins' => [
         'http://localhost:3000',
         'http://localhost:8000',
-        'https://mon-portfolio-1-i7oe.onrender.com',
         'https://mon-portfolio-kp-tech.vercel.app',
     ],
 
