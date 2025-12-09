@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         // Create pages
         Page::create([
             'page_name' => 'home',
-            'hero_headline' => "Hi, I'm Kangboden Prince. A Full-Stack Developer.",
+            'hero_headline' => "Hi, I'm Kangbode Prince. A Full-Stack Developer.",
             'hero_subheadline' => 'I build beautiful and functional web applications.',
             'hero_background_image' => '/images/Prince.jpeg',
             'cta_button_text' => 'View My Work',
