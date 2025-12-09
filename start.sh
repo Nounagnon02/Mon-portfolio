@@ -1,34 +1,39 @@
 #!/bin/bash
+set -e
 
-# Démarrer PHP-FPM en arrière-plan
-php-fpm -D
+# Set default port if not provided (Render uses PORT env)
+PORT=${PORT:-10000}
 
-# Créer le fichier SQLite s'il n'existe pas (sans l'overwrite)
-if [ ! -f /var/www/database/database.sqlite ]; then
-    touch /var/www/database/database.sqlite
-fi
+# Configure Apache to listen on the correct port
+echo "Listen $PORT" > /etc/apache2/ports.conf
 
-# Exécuter les migrations avec SQLite
-php artisan migrate --force --no-interaction || true
+# Configure VirtualHost
+cat > /etc/apache2/sites-available/000-default.conf << 'VHOST'
+<VirtualHost *:PORT_PLACEHOLDER>
+    DocumentRoot /var/www/public
+    <Directory /var/www/public>
+        AllowOverride All
+        Require all granted
+        Options -Indexes +FollowSymLinks
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+VHOST
 
-# Exécuter les seeders SEULEMENT si c'est le premier déploiement
-# ou si la variable FORCE_SEED est définie
-#if [ "$FORCE_SEED" = "true" ] || [ ! -f /var/www/storage/.seeded ]; then
-    #echo "Exécution des seeders..."
-    #php artisan db:seed --force
-    # Créer un fichier marqueur pour ne pas réexécuter
-    #touch /var/www/storage/.seeded
-#else
-    #echo "✅ Seeders déjà exécutés, skip..."
-#fi
+# Replace placeholder with actual port
+sed -i "s/PORT_PLACEHOLDER/$PORT/g" /etc/apache2/sites-available/000-default.conf
 
-# Optimiser l'application
+# Wait for database to be ready
+sleep 3
+
+# Run migrations (continue even if some fail)
+php artisan migrate --force || echo "Migration completed with warnings"
+
+# Clear and cache config for production
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Créer le lien symbolique pour le storage
-php artisan storage:link || true
-
-# Démarrer Nginx au premier plan
-nginx -g 'daemon off;'
+# Start Apache in foreground
+apache2-foreground

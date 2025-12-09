@@ -44,44 +44,9 @@ RUN chown -R www-data:www-data /var/www \
 # Configure Apache
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
-# Create startup script using printf for proper formatting
-RUN printf '#!/bin/bash\n\
-    set -e\n\
-    \n\
-    # Set default port if not provided (Render uses PORT env)\n\
-    PORT=${PORT:-10000}\n\
-    \n\
-    # Configure Apache to listen on the correct port\n\
-    echo "Listen $PORT" > /etc/apache2/ports.conf\n\
-    \n\
-    # Configure VirtualHost dynamically\n\
-    cat > /etc/apache2/sites-available/000-default.conf << EOF\n\
-    <VirtualHost *:$PORT>\n\
-    DocumentRoot /var/www/public\n\
-    <Directory /var/www/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-    Options -Indexes +FollowSymLinks\n\
-    </Directory>\n\
-    ErrorLog \\${APACHE_LOG_DIR}/error.log\n\
-    CustomLog \\${APACHE_LOG_DIR}/access.log combined\n\
-    </VirtualHost>\n\
-    EOF\n\
-    \n\
-    # Wait for database to be ready\n\
-    sleep 3\n\
-    \n\
-    # Run migrations (continue even if some fail)\n\
-    php artisan migrate --force || echo "Migration completed with warnings"\n\
-    \n\
-    # Clear and cache config for production\n\
-    php artisan config:cache\n\
-    php artisan route:cache\n\
-    php artisan view:cache\n\
-    \n\
-    # Start Apache in foreground\n\
-    apache2-foreground\n\
-    ' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
+# Copy startup script
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Expose default Render port
 EXPOSE 10000
