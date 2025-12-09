@@ -9,6 +9,10 @@ use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\SkillController;
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'Backend is working']);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

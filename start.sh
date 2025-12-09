@@ -7,7 +7,7 @@ php-fpm -D
 touch /var/www/database/database.sqlite
 
 # Exécuter les migrations avec SQLite
-php artisan migrate:fresh --force --no-interaction || true
+php artisan migrate --force --no-interaction || true
 
 # Exécuter les seeders SEULEMENT si c'est le premier déploiement
 # ou si la variable FORCE_SEED est définie
