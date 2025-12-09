@@ -68,9 +68,9 @@ const Resume = () => {
         <h1 className="resume-title">Kangboden Prince</h1>
         <p className="resume-subtitle">Full-Stack Developer</p>
         <div className="contact-info">
-          <span>📧 kangboden.prince@email.com</span>
-          <span>📱 +33 6 12 34 56 78</span>
-          <span>📍 Paris, France</span>
+          <span>📧 princekangbode@gmail.com</span>
+          <span>📱 +229 019 011 2477</span>
+          <span>📍 Cotonou, Bénin</span>
         </div>
       </div>
 
