@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: portfolio-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+      - key: REDIS_URL
+        value: ${REDIS_URL}
+      - key: FRONTEND_URL
+        value: https://mon-portfolio-five-alpha.vercel.app/
+
+caches:
+  - name: portfolio-redis
+    plan: free

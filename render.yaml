@@ -15,7 +15,7 @@ services:
       - key: APP_KEY
         sync: false
       - key: APP_URL
-        value: https://portfolio-de-kangbode-prince.onrender.com
+        value: https://mon-portfolio-m5x4.onrender.com
       - key: LOG_CHANNEL
         value: stderr
       - key: LOG_LEVEL
