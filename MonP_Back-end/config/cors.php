@@ -22,7 +22,8 @@ return [
    'allowed_origins' => [
         'http://localhost:3000',
         'http://localhost:8000',
-        'https://mon-portfolio-m5x4.onrender.com'
+        'https://mon-portfolio-1-i7oe.onrender.com',
+        'https://mon-portfolio-kp-tech.vercel.app',
     ],
 
     'allowed_origins_patterns' => [],
