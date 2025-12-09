@@ -3,6 +3,9 @@
 # Démarrer PHP-FPM en arrière-plan
 php-fpm -D
 
+# Nettoyer les migrations supprimées
+php artisan migrate:reset --force --no-interaction 2>/dev/null || true
+
 # Exécuter les migrations
 php artisan migrate --force --no-interaction || true
 
