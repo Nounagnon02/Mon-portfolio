@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('page_name');
             $table->string('hero_headline')->nullable();
-            $table->string('hero_subheadline')->nullable();
+            $table->text('hero_subheadline')->nullable();
             $table->text('hero_background_image')->nullable();
             $table->string('cta_button_text')->nullable();
             $table->string('cta_button_link')->nullable();
