@@ -28,7 +28,7 @@ sed -i "s/PORT_PLACEHOLDER/$PORT/g" /etc/apache2/sites-available/000-default.con
 sleep 3
 
 # Check if migrations should be forced (default: false after first deployment)
-FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-true}
+FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-false}
 
 if [ "$FORCE_MIGRATIONS" = "true" ]; then
   # Force reset and re-run all migrations
