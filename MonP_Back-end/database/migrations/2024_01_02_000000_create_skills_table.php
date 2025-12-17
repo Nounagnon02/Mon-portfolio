@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('category');
             $table->enum('proficiency', ['beginner', 'intermediate', 'advanced'])->default('intermediate');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }
