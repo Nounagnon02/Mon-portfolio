@@ -23,10 +23,11 @@ return [
         'http://localhost:3000',
         'http://localhost:8000',
         'https://mon-portfolio-kp-tech.vercel.app',
+        'https://mon-portfolio-git-main-kp-tech.vercel.app',
         'https://mon-portfolio-1-i7oe.onrender.com',
     ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['https://mon-portfolio.*\\.vercel\\.app'],
 
     'allowed_headers' => ['*'],
 
