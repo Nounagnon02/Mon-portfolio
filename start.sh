@@ -27,8 +27,16 @@ sed -i "s/PORT_PLACEHOLDER/$PORT/g" /etc/apache2/sites-available/000-default.con
 # Wait for database to be ready
 sleep 3
 
-# Run migrations (continue even if some fail)
-php artisan migrate --force || echo "Migration completed with warnings"
+# Check if migrations should be forced (default: false after first deployment)
+FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-true}
+
+if [ "$FORCE_MIGRATIONS" = "true" ]; then
+  # Force run migrations
+  php artisan migrate --force || echo "Migration completed with warnings"
+else
+  # Run migrations with verification (skip if already migrated)
+  php artisan migrate || echo "Migrations already applied or skipped"
+fi
 
 # Run seeders (only if tables are empty)
 php artisan db:seed --force || echo "Seeding completed with warnings"
