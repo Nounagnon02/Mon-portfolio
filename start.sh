@@ -28,11 +28,11 @@ sed -i "s/PORT_PLACEHOLDER/$PORT/g" /etc/apache2/sites-available/000-default.con
 sleep 3
 
 # Check if migrations should be forced (default: false after first deployment)
-FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-false}
+FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-true}
 
 if [ "$FORCE_MIGRATIONS" = "true" ]; then
   # Force reset and re-run all migrations
-  php artisan migrate:reset --force || true
+  #php artisan migrate:reset --force || true
   php artisan migrate --force || echo "Migration completed with warnings"
 else
   # Run migrations with verification (skip if already migrated)
