@@ -31,8 +31,9 @@ sleep 3
 FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-true}
 
 if [ "$FORCE_MIGRATIONS" = "true" ]; then
-  # Force refresh migrations (rollback and re-run)
-  php artisan migrate:refresh --force || echo "Migration refresh completed with warnings"
+  # Force reset and re-run all migrations
+  php artisan migrate:reset --force || true
+  php artisan migrate --force || echo "Migration completed with warnings"
 else
   # Run migrations with verification (skip if already migrated)
   php artisan migrate || echo "Migrations already applied or skipped"
