@@ -38,7 +38,7 @@ const CompleteDashboard = () => {
   const [showSkillModal, setShowSkillModal] = useState(false);
   const [currentSkill, setCurrentSkill] = useState(null);
   const [skillForm, setSkillForm] = useState({
-    category: '', name: '', order: 0
+    category: '', name: '', proficiency: 'intermediate'
   });
 
   useEffect(() => {
@@ -581,7 +581,7 @@ const CompleteDashboard = () => {
                 <div className="header-actions">
                   <button className="btn btn-primary" onClick={() => {
                     setCurrentSkill(null);
-                    setSkillForm({ category: '', name: '', order: 0 });
+                    setSkillForm({ category: '', name: '', proficiency: 'intermediate' });
                     setShowSkillModal(true);
                   }}>
                     Add Skill
@@ -595,6 +595,7 @@ const CompleteDashboard = () => {
                     <div className="skill-info">
                       <h3>{skill.name}</h3>
                       <p className="skill-category">{skill.category}</p>
+                      <p className="skill-proficiency">{skill.proficiency}</p>
                     </div>
                     <div className="skill-actions">
                       <button className="btn btn-secondary btn-sm" onClick={() => {
@@ -677,13 +678,13 @@ const CompleteDashboard = () => {
                 skillService.update(currentSkill.id, skillForm).then(() => {
                   setShowSkillModal(false);
                   setCurrentSkill(null);
-                  setSkillForm({ category: '', name: '', order: 0 });
+                  setSkillForm({ category: '', name: '', proficiency: 'intermediate' });
                   loadSkills();
                 });
               } else {
                 skillService.create(skillForm).then(() => {
                   setShowSkillModal(false);
-                  setSkillForm({ category: '', name: '', order: 0 });
+                  setSkillForm({ category: '', name: '', proficiency: 'intermediate' });
                   loadSkills();
                 });
               }
@@ -697,8 +698,13 @@ const CompleteDashboard = () => {
                 <input type="text" value={skillForm.name} onChange={(e) => setSkillForm({...skillForm, name: e.target.value})} required />
               </div>
               <div className="form-group">
-                <label>Order</label>
-                <input type="number" value={skillForm.order} onChange={(e) => setSkillForm({...skillForm, order: parseInt(e.target.value) || 0})} min="0" />
+                <label>Proficiency</label>
+                <select value={skillForm.proficiency} onChange={(e) => setSkillForm({...skillForm, proficiency: e.target.value})} required>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                  <option value="expert">Expert</option>
+                </select>
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowSkillModal(false)}>
@@ -766,7 +772,7 @@ const CompleteDashboard = () => {
               </div>
               <div className="form-group">
                 <label>Order</label>
-                <input type="number" value={experienceForm.order} onChange={(e) => setExperienceForm({...experienceForm, order: parseInt(e.target.value) || 0})} min="0" />
+                <input type="number" value={experienceForm.order} onChange={(e) => setExperienceForm({...experienceForm, order: e.target.value})} min="0" />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowExperienceModal(false)}>
@@ -877,7 +883,7 @@ const CompleteDashboard = () => {
                 <input
                   type="number"
                   value={projectForm.order}
-                  onChange={(e) => setProjectForm({...projectForm, order: parseInt(e.target.value) || 0})}
+                  onChange={(e) => setProjectForm({...projectForm, order: e.target.value})}
                   min="0"
                 />
               </div>

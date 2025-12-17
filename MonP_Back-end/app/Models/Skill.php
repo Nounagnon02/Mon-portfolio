@@ -9,9 +9,9 @@ class Skill extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'category',
-        'name',
-        'order'
+    protected $fillable = ['name', 'category', 'proficiency'];
+
+    protected $casts = [
+        'proficiency' => 'string'
     ];
 }
