@@ -38,10 +38,11 @@ class PageController extends Controller
                 'success' => false,
                 'message' => 'Page non trouvée'
             ], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur lors de la récupération de la page'
+                'message' => 'Erreur lors de la récupération de la page: ' . $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ], 500);
         }
     }
