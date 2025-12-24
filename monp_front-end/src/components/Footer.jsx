@@ -36,7 +36,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p className="footer__copyright">© 2025 Kangboden Prince. Tous droits réservés.</p>
+        <p className="footer__copyright">© 2025 Kangbode Prince. Tous droits réservés.</p>
 
         <div className="footer-links">
           <div className="social-links footer-socials">

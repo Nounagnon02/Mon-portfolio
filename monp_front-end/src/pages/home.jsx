@@ -30,8 +30,8 @@ const NavLink = ({ href, children, variant = "header" }) => (
   </a>
 );
 
-const Button = ({ children, variant = "darkblue", size = "medium", className = "" }) => (
-  <button className={`btn btn--${variant} btn--${size} ${className}`}>
+const Button = ({ children, variant = "darkblue", size = "medium", className = "", ...props }) => (
+  <button className={`btn btn--${variant} btn--${size} ${className}`} {...props}>
     {children}
   </button>
 );
@@ -39,7 +39,7 @@ const Button = ({ children, variant = "darkblue", size = "medium", className = "
 export default function Home() {
   const navigate = useNavigate();
   const [pageData, setPageData] = useState({
-    hero_headline: "Hi, I'm Kangboden Prince. A Full-Stack Developer.",
+    hero_headline: "Hi, I'm Kangbode Prince. A Full-Stack Developer.",
     hero_subheadline: "I build beautiful and functional web applications.",
     hero_background_image: "/images/Prince.jpeg"
   });
@@ -99,7 +99,7 @@ export default function Home() {
             <div className="hero__image-wrapper">
               <img
                 src={pageData.hero_background_image || "/images/Prince.jpeg"}
-                alt="Kangboden Prince"
+                alt="Kangbode Prince"
                 className="hero__image"
                 style={{
                   borderRadius: '50%',
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
             <div className="hero__text">
               <h1 className="hero__title">
-                {pageData.hero_headline || "Hi, I'm Kangboden Prince. A Full-Stack Developer."}
+                {pageData.hero_headline || "Hi, I'm Kangbode Prince. A Full-Stack Developer."}
               </h1>
               <p className="hero__subtitle">
                 {pageData.hero_subheadline || "I build beautiful and functional web applications."}

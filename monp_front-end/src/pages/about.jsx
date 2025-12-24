@@ -183,7 +183,7 @@ export default function About() {
         <div className="hero">
           <img 
                 src={pageData.hero_background_image || "/images/Prince.jpeg"} 
-                alt="Kangboden Prince" 
+                alt="Kangbode Prince" 
                 className="hero__image"
               />
           <div className="hero__content">

@@ -65,7 +65,7 @@ const Resume = () => {
   return (
     <div className="resume-container">
       <div className="resume-header">
-        <h1 className="resume-title">Kangboden Prince</h1>
+        <h1 className="resume-title">Kangbode Prince</h1>
         <p className="resume-subtitle">Full-Stack Developer</p>
         <div className="contact-info">
           <span>📧 princekangbode@gmail.com</span>
