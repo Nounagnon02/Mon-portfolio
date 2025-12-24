@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { pageService } from '../services/api';
 import { useToast, Toast } from '../components/Toast';
 import { getErrorMessage } from '../utils/errorHandler';
@@ -17,7 +18,7 @@ const Logo = () => (
 
 const SkillCard = ({ icon, title, description }) => (
   <div className="skill-card">
-    <span className="material-symbols-outlined skill-icon">{icon}</span>
+    <span className="material-symbols-outlined skill-icon notranslate">{icon}</span>
     <h2 className="skill-title">{title}</h2>
     <p className="skill-description">{description}</p>
   </div>
@@ -36,6 +37,7 @@ const Button = ({ children, variant = "darkblue", size = "medium", className = "
 );
 
 export default function Home() {
+  const navigate = useNavigate();
   const [pageData, setPageData] = useState({
     hero_headline: "Hi, I'm Kangboden Prince. A Full-Stack Developer.",
     hero_subheadline: "I build beautiful and functional web applications.",
@@ -114,9 +116,7 @@ export default function Home() {
               <p className="hero__subtitle">
                 {pageData.hero_subheadline || "I build beautiful and functional web applications."}
               </p>
-              <a href="#projects" style={{ textDecoration: 'none' }}>
-                <Button size="large">View My Work</Button>
-              </a>
+              <Button size="large" onClick={() => navigate('/projects')}>View My Work</Button>
             </div>
           </div>
         </div>

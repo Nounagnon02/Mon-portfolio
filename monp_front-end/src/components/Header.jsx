@@ -21,7 +21,7 @@ const Header = () => {
         <div className="header__brand">
           <Link to="/" className="brand-link">
             <span className="logo">KP</span>
-            <h2 className="brand-name">Kangboden Prince</h2>
+            <h2 className="brand-name">Kangbode Prince</h2>
           </Link>
         </div>
 
