@@ -12,13 +12,13 @@ class ImageUploadController extends Controller
     {
         try {
             $validated = $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
                 'type' => 'required|string|in:project,page'
             ], [
                 'image.required' => 'Une image est requise',
                 'image.image' => 'Le fichier doit être une image valide',
                 'image.mimes' => 'Les formats acceptés sont: jpeg, png, jpg, gif, webp',
-                'image.max' => 'L\'image ne doit pas dépasser 2MB',
+                'image.max' => 'L\'image ne doit pas dépasser 10MB',
                 'type.required' => 'Le type d\'image est requis',
                 'type.in' => 'Le type doit être project ou page'
             ]);

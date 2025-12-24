@@ -78,6 +78,28 @@
   animation: fadeIn 1s ease-out 0.3s backwards;
 }
 
+.project-image {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background: var(--gray-900);
+  /* Dark background for fallback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-fallback-logo {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--white) 0%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
 .filter-btn {
   background: white;
   color: #64748b;

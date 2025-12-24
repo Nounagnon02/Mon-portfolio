@@ -109,9 +109,9 @@ const Projects = () => {
   const filteredProjects = filter === 'all'
     ? displayProjects
     : displayProjects.filter(project => {
-        const projectCategory = project.category || '';
-        return projectCategory.toLowerCase() === filter.toLowerCase();
-      });
+      const projectCategory = project.category || '';
+      return projectCategory.toLowerCase() === filter.toLowerCase();
+    });
 
   return (
     <div className="projects-section">
@@ -145,7 +145,13 @@ const Projects = () => {
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="project-image">
-              <img src={project.image || 'https://via.placeholder.com/400x200'} alt={project.title} />
+              {!project.image || project.image.includes('placeholder') ? (
+                <span className="project-fallback-logo">
+                  {project.title.split(' ').map(word => word[0]).join('').substring(0, 2)}
+                </span>
+              ) : (
+                <img src={project.image} alt={project.title} />
+              )}
               <div className="project-overlay">
                 <div className="overlay-content">
                   {project.live_url && project.live_url !== '#' && (

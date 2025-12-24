@@ -8,19 +8,19 @@ import './DashboardProjects.css';
 const CompleteDashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeTab, setActiveTab] = useState('home');
-  
+
   const [heroData, setHeroData] = useState({ headline: '', subHeadline: '', backgroundImage: '' });
   const [ctaData, setCtaData] = useState({ buttonText: '', buttonLink: '' });
   const [pageId, setPageId] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [backgroundImagePreview, setBackgroundImagePreview] = useState(null);
-  
+
   const [projects, setProjects] = useState([]);
   const [experiences, setExperiences] = useState([]);
   const [skills, setSkills] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [stats, setStats] = useState({ totalProjects: 0, totalContacts: 0, unreadContacts: 0 });
-  
+
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [currentProject, setCurrentProject] = useState(null);
   const [projectForm, setProjectForm] = useState({
@@ -28,13 +28,13 @@ const CompleteDashboard = () => {
   });
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  
+
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [currentExperience, setCurrentExperience] = useState(null);
   const [experienceForm, setExperienceForm] = useState({
     type: 'professional', title: '', company: '', position: '', description: '', location: '', start_date: '', end_date: '', is_current: false, order: 0
   });
-  
+
   const [showSkillModal, setShowSkillModal] = useState(false);
   const [currentSkill, setCurrentSkill] = useState(null);
   const [skillForm, setSkillForm] = useState({
@@ -148,21 +148,21 @@ const CompleteDashboard = () => {
     e.preventDefault();
     try {
       let imagePath = projectForm.image;
-      
+
       // Upload new image if selected
       if (selectedImage) {
         const uploadResult = await imageService.upload(selectedImage, 'project');
         imagePath = uploadResult.path;
       }
-      
+
       const formData = { ...projectForm, image: imagePath };
-      
+
       if (currentProject) {
         await projectService.update(currentProject.id, formData);
       } else {
         await projectService.create(formData);
       }
-      
+
       setShowProjectModal(false);
       setCurrentProject(null);
       setProjectForm({ title: '', description: '', image: '', technologies: [], category: '', live_url: '', github_url: '', order: 0 });
@@ -170,7 +170,16 @@ const CompleteDashboard = () => {
       setImagePreview(null);
       loadProjects();
     } catch (error) {
-      alert('Error saving project');
+      console.error('Error saving project:', error);
+      const message = error.response?.data?.message || 'Error saving project';
+      const validationErrors = error.response?.data?.errors;
+
+      if (validationErrors) {
+        const errorDetails = Object.values(validationErrors).flat().join('\n');
+        alert(`${message}\n\n${errorDetails}`);
+      } else {
+        alert(message);
+      }
     }
   };
 
@@ -359,7 +368,7 @@ const CompleteDashboard = () => {
                     type="text"
                     value={heroData.headline}
                     onChange={(e) => {
-                      setHeroData({...heroData, headline: e.target.value});
+                      setHeroData({ ...heroData, headline: e.target.value });
                       setHasChanges(true);
                     }}
                     placeholder="Enter hero headline"
@@ -370,7 +379,7 @@ const CompleteDashboard = () => {
                   <textarea
                     value={heroData.subHeadline}
                     onChange={(e) => {
-                      setHeroData({...heroData, subHeadline: e.target.value});
+                      setHeroData({ ...heroData, subHeadline: e.target.value });
                       setHasChanges(true);
                     }}
                     placeholder="Enter hero sub-headline"
@@ -391,10 +400,10 @@ const CompleteDashboard = () => {
                             setBackgroundImagePreview(reader.result);
                           };
                           reader.readAsDataURL(file);
-                          
+
                           try {
                             const uploadResult = await imageService.upload(file, 'page');
-                            setHeroData({...heroData, backgroundImage: uploadResult.path});
+                            setHeroData({ ...heroData, backgroundImage: uploadResult.path });
                             setHasChanges(true);
                           } catch (error) {
                             alert('Error uploading image');
@@ -427,7 +436,7 @@ const CompleteDashboard = () => {
                     type="text"
                     value={ctaData.buttonText}
                     onChange={(e) => {
-                      setCtaData({...ctaData, buttonText: e.target.value});
+                      setCtaData({ ...ctaData, buttonText: e.target.value });
                       setHasChanges(true);
                     }}
                     placeholder="Enter button text"
@@ -439,7 +448,7 @@ const CompleteDashboard = () => {
                     type="url"
                     value={ctaData.buttonLink}
                     onChange={(e) => {
-                      setCtaData({...ctaData, buttonLink: e.target.value});
+                      setCtaData({ ...ctaData, buttonLink: e.target.value });
                       setHasChanges(true);
                     }}
                     placeholder="Enter button link"
@@ -506,8 +515,8 @@ const CompleteDashboard = () => {
                   <p className="page-subtitle">Manage your portfolio projects</p>
                 </div>
                 <div className="header-actions">
-                  <button 
-                    className="btn btn-primary" 
+                  <button
+                    className="btn btn-primary"
                     onClick={() => {
                       setCurrentProject(null);
                       setProjectForm({ title: '', description: '', image: '', technologies: [], category: '', live_url: '', github_url: '', order: 0 });
@@ -536,7 +545,7 @@ const CompleteDashboard = () => {
                         )) : null}
                       </div>
                       <div className="dashboard-project-actions">
-                        <button 
+                        <button
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
                             setCurrentProject(project);
@@ -557,7 +566,7 @@ const CompleteDashboard = () => {
                         >
                           Edit
                         </button>
-                        <button 
+                        <button
                           className="btn btn-danger btn-sm"
                           onClick={() => deleteProject(project.id)}
                         >
@@ -639,14 +648,14 @@ const CompleteDashboard = () => {
                       </div>
                       <div className="contact-actions">
                         {!contact.is_read && (
-                          <button 
+                          <button
                             className="btn btn-secondary btn-sm"
                             onClick={() => markAsRead(contact.id)}
                           >
                             Mark as Read
                           </button>
                         )}
-                        <button 
+                        <button
                           className="btn btn-danger btn-sm"
                           onClick={() => deleteContact(contact.id)}
                         >
@@ -691,15 +700,15 @@ const CompleteDashboard = () => {
             }} className="project-form">
               <div className="form-group">
                 <label>Category</label>
-                <input type="text" value={skillForm.category} onChange={(e) => setSkillForm({...skillForm, category: e.target.value})} required />
+                <input type="text" value={skillForm.category} onChange={(e) => setSkillForm({ ...skillForm, category: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Skill Name</label>
-                <input type="text" value={skillForm.name} onChange={(e) => setSkillForm({...skillForm, name: e.target.value})} required />
+                <input type="text" value={skillForm.name} onChange={(e) => setSkillForm({ ...skillForm, name: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Proficiency</label>
-                <select value={skillForm.proficiency} onChange={(e) => setSkillForm({...skillForm, proficiency: e.target.value})} required>
+                <select value={skillForm.proficiency} onChange={(e) => setSkillForm({ ...skillForm, proficiency: e.target.value })} required>
                   <option value="beginner">Beginner</option>
                   <option value="intermediate">Intermediate</option>
                   <option value="advanced">Advanced</option>
@@ -729,7 +738,7 @@ const CompleteDashboard = () => {
             <form onSubmit={handleExperienceSubmit} className="project-form">
               <div className="form-group">
                 <label>Type</label>
-                <select value={experienceForm.type} onChange={(e) => setExperienceForm({...experienceForm, type: e.target.value})} required>
+                <select value={experienceForm.type} onChange={(e) => setExperienceForm({ ...experienceForm, type: e.target.value })} required>
                   <option value="professional">Expérience Professionnelle</option>
                   <option value="competition">Compétition</option>
                   <option value="hackathon">Hackathon</option>
@@ -738,41 +747,41 @@ const CompleteDashboard = () => {
               </div>
               <div className="form-group">
                 <label>Title</label>
-                <input type="text" value={experienceForm.title} onChange={(e) => setExperienceForm({...experienceForm, title: e.target.value})} required />
+                <input type="text" value={experienceForm.title} onChange={(e) => setExperienceForm({ ...experienceForm, title: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Company</label>
-                <input type="text" value={experienceForm.company} onChange={(e) => setExperienceForm({...experienceForm, company: e.target.value})} required />
+                <input type="text" value={experienceForm.company} onChange={(e) => setExperienceForm({ ...experienceForm, company: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Position</label>
-                <input type="text" value={experienceForm.position} onChange={(e) => setExperienceForm({...experienceForm, position: e.target.value})} required />
+                <input type="text" value={experienceForm.position} onChange={(e) => setExperienceForm({ ...experienceForm, position: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Description</label>
-                <textarea value={experienceForm.description} onChange={(e) => setExperienceForm({...experienceForm, description: e.target.value})} rows="4" />
+                <textarea value={experienceForm.description} onChange={(e) => setExperienceForm({ ...experienceForm, description: e.target.value })} rows="4" />
               </div>
               <div className="form-group">
                 <label>Location</label>
-                <input type="text" value={experienceForm.location} onChange={(e) => setExperienceForm({...experienceForm, location: e.target.value})} />
+                <input type="text" value={experienceForm.location} onChange={(e) => setExperienceForm({ ...experienceForm, location: e.target.value })} />
               </div>
               <div className="form-group">
                 <label>Start Date</label>
-                <input type="date" value={experienceForm.start_date} onChange={(e) => setExperienceForm({...experienceForm, start_date: e.target.value})} required />
+                <input type="date" value={experienceForm.start_date} onChange={(e) => setExperienceForm({ ...experienceForm, start_date: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>End Date</label>
-                <input type="date" value={experienceForm.end_date} onChange={(e) => setExperienceForm({...experienceForm, end_date: e.target.value})} disabled={experienceForm.is_current} />
+                <input type="date" value={experienceForm.end_date} onChange={(e) => setExperienceForm({ ...experienceForm, end_date: e.target.value })} disabled={experienceForm.is_current} />
               </div>
               <div className="form-group">
                 <label>
-                  <input type="checkbox" checked={experienceForm.is_current} onChange={(e) => setExperienceForm({...experienceForm, is_current: e.target.checked})} />
+                  <input type="checkbox" checked={experienceForm.is_current} onChange={(e) => setExperienceForm({ ...experienceForm, is_current: e.target.checked })} />
                   Currently working here
                 </label>
               </div>
               <div className="form-group">
                 <label>Order</label>
-                <input type="number" value={experienceForm.order} onChange={(e) => setExperienceForm({...experienceForm, order: e.target.value})} min="0" />
+                <input type="number" value={experienceForm.order} onChange={(e) => setExperienceForm({ ...experienceForm, order: e.target.value })} min="0" />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowExperienceModal(false)}>
@@ -800,7 +809,7 @@ const CompleteDashboard = () => {
                 <input
                   type="text"
                   value={projectForm.title}
-                  onChange={(e) => setProjectForm({...projectForm, title: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, title: e.target.value })}
                   required
                 />
               </div>
@@ -808,7 +817,7 @@ const CompleteDashboard = () => {
                 <label>Description</label>
                 <textarea
                   value={projectForm.description}
-                  onChange={(e) => setProjectForm({...projectForm, description: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
                   rows="4"
                   required
                 />
@@ -845,7 +854,7 @@ const CompleteDashboard = () => {
                 <input
                   type="text"
                   value={Array.isArray(projectForm.technologies) ? projectForm.technologies.join(', ') : ''}
-                  onChange={(e) => setProjectForm({...projectForm, technologies: e.target.value.split(',').map(t => t.trim())})}
+                  onChange={(e) => setProjectForm({ ...projectForm, technologies: e.target.value.split(',').map(t => t.trim()) })}
                   placeholder="React, Node.js, MongoDB"
                 />
               </div>
@@ -853,7 +862,7 @@ const CompleteDashboard = () => {
                 <label>Category</label>
                 <select
                   value={projectForm.category}
-                  onChange={(e) => setProjectForm({...projectForm, category: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, category: e.target.value })}
                 >
                   <option value="">Select Category</option>
                   <option value="web">Web Development</option>
@@ -867,7 +876,7 @@ const CompleteDashboard = () => {
                 <input
                   type="url"
                   value={projectForm.live_url}
-                  onChange={(e) => setProjectForm({...projectForm, live_url: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, live_url: e.target.value })}
                 />
               </div>
               <div className="form-group">
@@ -875,7 +884,7 @@ const CompleteDashboard = () => {
                 <input
                   type="url"
                   value={projectForm.github_url}
-                  onChange={(e) => setProjectForm({...projectForm, github_url: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
                 />
               </div>
               <div className="form-group">
@@ -883,7 +892,7 @@ const CompleteDashboard = () => {
                 <input
                   type="number"
                   value={projectForm.order}
-                  onChange={(e) => setProjectForm({...projectForm, order: e.target.value})}
+                  onChange={(e) => setProjectForm({ ...projectForm, order: e.target.value })}
                   min="0"
                 />
               </div>
