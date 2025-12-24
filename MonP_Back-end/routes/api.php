@@ -13,24 +13,7 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Backend is working']);
 });
 
-Route::get('/db-check', function () {
-    try {
-        \Illuminate\Support\Facades\DB::connection()->getPdo();
-        $dbName = \Illuminate\Support\Facades\DB::connection()->getDatabaseName();
-        $tableCount = \Illuminate\Support\Facades\DB::select('SELECT count(*) as count FROM information_schema.tables WHERE table_schema = ?', ['public']);
-        return response()->json([
-            'status' => 'success',
-            'message' => "Connected to database: $dbName",
-            'tables_count' => $tableCount
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage(),
-            'code' => $e->getCode()
-        ], 500);
-    }
-});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
