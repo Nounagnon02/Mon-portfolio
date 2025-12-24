@@ -25,9 +25,13 @@ class PageController extends Controller
     public function show($pageName)
     {
         try {
-            $page = Page::where('page_name', $pageName)
-                ->orWhere('id', $pageName)
-                ->firstOrFail();
+            $query = Page::where('page_name', $pageName);
+            
+            if (is_numeric($pageName)) {
+                $query->orWhere('id', $pageName);
+            }
+            
+            $page = $query->firstOrFail();
             
             return response()->json([
                 'success' => true,
