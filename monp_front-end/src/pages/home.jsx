@@ -95,9 +95,9 @@ export default function Home() {
         <div className="hero__container">
           <div className="hero__content">
             <div className="hero__image-wrapper">
-              <img 
-                src={pageData.hero_background_image || "/images/Prince.jpeg"} 
-                alt="Kangboden Prince" 
+              <img
+                src={pageData.hero_background_image || "/images/Prince.jpeg"}
+                alt="Kangboden Prince"
                 className="hero__image"
                 style={{
                   borderRadius: '50%',
@@ -114,12 +114,14 @@ export default function Home() {
               <p className="hero__subtitle">
                 {pageData.hero_subheadline || "I build beautiful and functional web applications."}
               </p>
-              <Button size="large">View My Work</Button>
+              <a href="#projects" style={{ textDecoration: 'none' }}>
+                <Button size="large">View My Work</Button>
+              </a>
             </div>
           </div>
         </div>
       </section>
-      
+
       <section className="about" id="about">
         <div className="about__container">
           <div className="about__content">

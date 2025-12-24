@@ -25,6 +25,7 @@ return [
         'https://mon-portfolio-kp-tech.vercel.app',
         'https://mon-portfolio-git-main-kp-tech.vercel.app',
         'https://mon-portfolio-1-i7oe.onrender.com',
+        'https://mon-portfolio-five-alpha.vercel.app',
     ],
 
     'allowed_origins_patterns' => ['https://mon-portfolio.*\\.vercel\\.app'],
