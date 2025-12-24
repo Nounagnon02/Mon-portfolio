@@ -33,14 +33,22 @@ FORCE_MIGRATIONS=${FORCE_MIGRATIONS:-false}
 if [ "$FORCE_MIGRATIONS" = "true" ]; then
   # Force reset and re-run all migrations
   #php artisan migrate:reset --force || true
-  php artisan migrate --force || echo "Migration completed with warnings"
+  php artisan migrate --force
 else
   # Run migrations with verification (skip if already migrated)
-  php artisan migrate || echo "Migrations already applied or skipped"
+  php artisan migrate --force
 fi
 
-# Run seeders (only if tables are empty)
-php artisan db:seed --force || echo "Seeding completed with warnings"
+FORCE_SEEDS=${FORCE_SEEDS:-false}
+if [ "$FORCE_SEEDS" = "true" ]; then
+  # Force reset and re-run all migrations
+  #php artisan migrate:reset --force || true
+  php artisan db:seed --force || echo "Seeding completed with warnings"   
+else
+  # Run seeders (skip if already seeded)
+  echo "Seeds already applied or skipped"
+fi
+
 
 # Clear and cache config for production
 php artisan config:cache
