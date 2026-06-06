@@ -1,0 +1,268 @@
+/* Resume Page */
+.resume-page {
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+}
+
+.resume-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.resume-page__header-content {
+  flex: 1;
+}
+
+.resume-page__name {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+}
+
+.resume-page__title {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+
+.resume-page__contact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.resume-page__contact a {
+  color: var(--accent-gold);
+  text-decoration: none;
+}
+
+.resume-page__contact a:hover {
+  text-decoration: underline;
+}
+
+.resume-page__dot {
+  color: var(--border-secondary);
+}
+
+.resume-page__summary {
+  max-width: 720px;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-10);
+}
+
+.resume-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.resume-page__block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  transition: border-color var(--transition-base);
+}
+
+.resume-page__block:hover {
+  border-color: var(--border-secondary);
+}
+
+.resume-page__block-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+/* Skills */
+.resume-page__skills {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.resume-page__skill-group {}
+
+.resume-page__skill-category {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.resume-page__skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.resume-page__skill-item {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-full);
+}
+
+/* Experience */
+.resume-page__experience {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.resume-page__exp-item {}
+
+.resume-page__exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.resume-page__exp-role {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.resume-page__exp-period {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.resume-page__exp-company {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--accent-teal);
+  margin-bottom: var(--space-3);
+}
+
+.resume-page__exp-highlights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.resume-page__exp-highlight {
+  position: relative;
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.resume-page__exp-highlight::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+/* Bottom */
+.resume-page__bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.resume-page__edu-item {
+  margin-bottom: var(--space-4);
+}
+
+.resume-page__edu-item:last-child {
+  margin-bottom: 0;
+}
+
+.resume-page__edu-degree {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.resume-page__edu-school {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.resume-page__group {
+  margin-bottom: var(--space-6);
+}
+
+.resume-page__group:last-child {
+  margin-bottom: 0;
+}
+
+.resume-page__group-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.resume-page__group-item {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding: var(--space-1) 0;
+}
+
+.resume-page__interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.resume-page__interest-tag {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--accent-teal);
+  background: var(--accent-teal-muted);
+  border-radius: var(--radius-full);
+}
+
+@media (max-width: 768px) {
+  .resume-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resume-page__name {
+    font-size: var(--text-3xl);
+  }
+
+  .resume-page__grid,
+  .resume-page__bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-page__exp-header {
+    flex-direction: column;
+  }
+}

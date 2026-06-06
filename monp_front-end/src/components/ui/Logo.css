@@ -1,0 +1,33 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.logo__svg {
+  display: block;
+  transition: filter var(--transition-base);
+}
+
+.logo:hover .logo__svg {
+  filter: brightness(1.15) drop-shadow(0 0 8px rgba(212, 160, 74, 0.4));
+}
+
+/* In footer, we want a slightly different feel */
+.footer__logo .logo__svg {
+  width: 36px;
+  height: 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo {
+    transition: none;
+    animation: none;
+  }
+  .logo__svg {
+    transition: none;
+    animation: none;
+  }
+}

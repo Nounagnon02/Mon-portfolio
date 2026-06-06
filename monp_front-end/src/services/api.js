@@ -16,12 +16,9 @@ export const projectService = {
   delete: (id) => api.delete(`/projects/${id}`)
 };
 
-export const experienceService = {
-  getAll: () => api.get('/experiences'),
-  getById: (id) => api.get(`/experiences/${id}`),
-  create: (data) => api.post('/experiences', data),
-  update: (id, data) => api.put(`/experiences/${id}`, data),
-  delete: (id) => api.delete(`/experiences/${id}`)
+export const blogService = {
+  getAll: () => api.get('/articles'),
+  getBySlug: (slug) => api.get(`/articles/${slug}`),
 };
 
 export const contactService = {

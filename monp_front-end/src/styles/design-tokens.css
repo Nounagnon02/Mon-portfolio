@@ -1,0 +1,200 @@
+/* ============================================================
+   DESIGN TOKENS — Kangbode Prince Portfolio
+   Identity: "Bénin Signature"
+   Dark theme first, light theme via [data-theme="light"]
+   ============================================================ */
+
+:root {
+  /* ---- Colors (Dark Theme - Default) ---- */
+  /* Signature warm-toned dark palette */
+  --bg-primary: #0A0806;
+  --bg-secondary: #12100E;
+  --bg-tertiary: #1A1816;
+  --bg-card: #1E1C1A;
+  --bg-elevated: #252220;
+  --bg-hover: #2A2825;
+
+  --text-primary: #F5F0EB;
+  --text-secondary: #B8B0A8;
+  --text-tertiary: #8A8278;
+  --text-muted: #6A6258;
+  --text-inverse: #0A0806;
+
+  --border-primary: #2A2825;
+  --border-secondary: #35302B;
+  --border-subtle: #1E1C1A;
+
+  /* ---- Brand Colors — "Bénin Signature" palette ---- */
+  /* Warm gold — the signature accent (inspired by Sahelian gold) */
+  --accent-gold: #D4A04A;
+  --accent-gold-hover: #E0B45E;
+  --accent-gold-muted: rgba(212, 160, 74, 0.12);
+  --accent-gold-glow: rgba(212, 160, 74, 0.25);
+
+  /* Deep teal — complementary contrast (inspired by lagoon waters) */
+  --accent-teal: #0D7377;
+  --accent-teal-hover: #148A8F;
+  --accent-teal-muted: rgba(13, 115, 119, 0.12);
+
+  /* Warm terracotta — secondary accent (earthy, grounded) */
+  --accent-terracotta: #C9614A;
+  --accent-terracotta-muted: rgba(201, 97, 74, 0.12);
+
+  /* Primary accent alias (gold is the hero) */
+  --accent-primary: var(--accent-gold);
+  --accent-primary-hover: var(--accent-gold-hover);
+  --accent-primary-muted: var(--accent-gold-muted);
+  --accent-primary-glow: var(--accent-gold-glow);
+
+  /* Secondary accent alias */
+  --accent-secondary: var(--accent-teal);
+  --accent-secondary-muted: var(--accent-teal-muted);
+
+  /* Gradients — signature gold-teal-terracotta */
+  --accent-gradient: linear-gradient(135deg, #D4A04A 0%, #0D7377 50%, #C9614A 100%);
+  --accent-gradient-reverse: linear-gradient(135deg, #C9614A 0%, #0D7377 50%, #D4A04A 100%);
+  --accent-gradient-warm: linear-gradient(135deg, #D4A04A 0%, #C9614A 100%);
+  --accent-gradient-cool: linear-gradient(135deg, #0D7377 0%, #2D5A5E 100%);
+  --accent-gradient-subtle: linear-gradient(135deg, rgba(212, 160, 74, 0.12), rgba(13, 115, 119, 0.12));
+
+  /* === Legacy aliases for backward compatibility === */
+  --accent-blue: var(--accent-teal);
+  --accent-blue-hover: var(--accent-teal-hover);
+  --accent-blue-muted: var(--accent-teal-muted);
+  --accent-blue-glow: rgba(13, 115, 119, 0.25);
+  --accent-purple: var(--accent-terracotta);
+  --accent-purple-hover: #D97A63;
+  --accent-purple-muted: var(--accent-terracotta-muted);
+
+  /* Semantic Colors */
+  --color-success: #2D8F5E;
+  --color-warning: #D4A04A;
+  --color-error: #C9614A;
+  --color-info: #0D7377;
+
+  /* ---- Typography ---- */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+  --text-6xl: 3.75rem;   /* 60px */
+  --text-7xl: 4.5rem;    /* 72px */
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-14: 3.5rem;   /* 56px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* ---- Border Radius ---- */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.25rem;   /* 20px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.7);
+  --shadow-glow-primary: 0 0 24px rgba(212, 160, 74, 0.25);
+  --shadow-glow-secondary: 0 0 24px rgba(13, 115, 119, 0.25);
+  --shadow-glow-warm: 0 0 24px rgba(201, 97, 74, 0.2);
+
+  /* ---- Transitions ---- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* ---- Z-Index ---- */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-navbar: 1000;
+  --z-overlay: 1100;
+  --z-modal: 1200;
+  --z-toast: 1300;
+
+  /* ---- Container ---- */
+  --container-max: 1200px;
+  --container-padding: 1.5rem;
+
+  /* ---- Glass Effect ---- */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur: 16px;
+}
+
+/* ============================================================
+   LIGHT THEME — "Savane" (light, warm, airy)
+   ============================================================ */
+[data-theme="light"] {
+  --bg-primary: #FAF7F2;
+  --bg-secondary: #F5F0EA;
+  --bg-tertiary: #EDE8E0;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #F0EBE3;
+
+  --text-primary: #1A1612;
+  --text-secondary: #5A5248;
+  --text-tertiary: #7A7268;
+  --text-muted: #A29A90;
+  --text-inverse: #FAF7F2;
+
+  --border-primary: #E5E0D8;
+  --border-secondary: #D5D0C8;
+  --border-subtle: #F0EBE3;
+
+  --accent-gold-muted: rgba(212, 160, 74, 0.1);
+  --accent-teal-muted: rgba(13, 115, 119, 0.08);
+  --accent-terracotta-muted: rgba(201, 97, 74, 0.08);
+  --accent-primary-muted: var(--accent-gold-muted);
+  --accent-secondary-muted: var(--accent-teal-muted);
+  --accent-gradient-subtle: linear-gradient(135deg, rgba(212, 160, 74, 0.1), rgba(13, 115, 119, 0.08));
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS (used in media queries in components)
+   320px · 480px · 640px · 768px · 1024px · 1280px · 1440px
+   ============================================================ */
