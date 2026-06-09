@@ -8,6 +8,7 @@ server: {
     open: false,
   },
   build: {
+    outDir: 'build',
     rollupOptions: {
       output: {
         manualChunks: {
