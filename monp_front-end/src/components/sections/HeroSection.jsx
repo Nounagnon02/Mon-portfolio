@@ -1,188 +1,154 @@
-import { motion } from 'framer-motion';
-import { useTypewriter } from '../../hooks/useTypewriter';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useI18n } from '../../context/I18nContext';
-import Button from '../ui/Button';
-import Badge from '../ui/Badge';
+import { useMotion } from '../../context/MotionContext';
+import { featuredProjects } from '../../data/projects';
+import LagoonFallback from '../lagoon/LagoonFallback';
+import LagoonCanvas, { canUse3D } from '../lagoon/LagoonCanvas';
 import './HeroSection.css';
 
-const roles = [
-  'Full-Stack Developer',
-  'Laravel & React Expert',
-  'API Architect',
-  'Problem Solver',
+// Distinct technologies that carry the featured projects, main one first, for the static image
+const fallbackTags = [
+  ...new Set([
+    ...featuredProjects.map((p) => p.foundations[0]),
+    ...featuredProjects.flatMap((p) => p.foundations.slice(1)),
+  ]),
 ];
-
-// Generate diamond data for the animated background
-const diamondData = Array.from({ length: 16 }, (_, i) => ({
-  id: i,
-  size: 20 + Math.random() * 80,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  duration: 8 + Math.random() * 20,
-  delay: Math.random() * 10,
-  rotate: Math.random() * 360,
-  color: i % 3 === 0 ? 'gold' : i % 3 === 1 ? 'teal' : 'terracotta',
-  reverse: Math.random() > 0.5,
-}));
-
-// Gradient orb data
-const orbData = Array.from({ length: 5 }, (_, i) => ({
-  id: i,
-  size: 150 + Math.random() * 250,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  duration: 15 + Math.random() * 20,
-  delay: Math.random() * 8,
-  color: i % 2 === 0 ? 'gold' : 'teal',
-}));
 
 export default function HeroSection() {
   const { t } = useI18n();
-  const { text } = useTypewriter({ words: roles, typeSpeed: 60, deleteSpeed: 40, pauseDuration: 2500 });
+  const { motionOff } = useMotion();
+  const sectionRef = useRef(null);
+  const apiRef = useRef(null);
+  const [failed, setFailed] = useState(false);
+  // ready: a scene is on screen. tall: the section has its two-screen dive height,
+  // kept while a scene is rebuilt (theme change) so the page never jumps.
+  const [ready, setReady] = useState(false);
+  const [tall, setTall] = useState(false);
+
+  const supports3D = useMemo(() => canUse3D(), []);
+  const want3D = supports3D && !motionOff && !failed;
+  const live = want3D && ready;
+  const diving = want3D && tall;
+
+  useEffect(() => {
+    if (!want3D) {
+      setReady(false);
+      setTall(false);
+    }
+  }, [want3D]);
+
+  const handlePending = useCallback(() => setReady(false), []);
+  const handleReady = useCallback(() => {
+    setReady(true);
+    setTall(true);
+  }, []);
+  const handleFail = useCallback(() => {
+    setFailed(true);
+    setReady(false);
+    setTall(false);
+  }, []);
+
+  // Scroll and pointer steer the camera; native scrolling is never intercepted
+  useEffect(() => {
+    if (!diving) return undefined;
+    const section = sectionRef.current;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const rect = section.getBoundingClientRect();
+      const range = rect.height - window.innerHeight;
+      const p = range > 0 ? Math.min(Math.max(-rect.top / range, 0), 1) : 0;
+      section.style.setProperty('--dive', p.toFixed(3));
+      if (apiRef.current) apiRef.current.setProgress(p);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const onPointer = (e) => {
+      if (e.pointerType !== 'mouse' || !apiRef.current) return;
+      apiRef.current.setPointer(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -((e.clientY / window.innerHeight) * 2 - 1),
+      );
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('pointermove', onPointer);
+      section.style.removeProperty('--dive');
+    };
+  }, [diving]);
 
   return (
-    <section className="hero-section" aria-label="Hero">
-      {/* Animated cosmic geometric backdrop */}
-      <div className="hero-section__bg-gradient" aria-hidden="true" />
+    <section
+      ref={sectionRef}
+      className="hero-lagoon"
+      data-live={live ? 'true' : 'false'}
+      data-tall={diving ? 'true' : 'false'}
+      aria-labelledby="hero-title"
+    >
+      <div className="hero-lagoon__stage">
+        <div className="hero-lagoon__sky" aria-hidden="true" />
+        <LagoonFallback className="hero-lagoon__fallback" tags={fallbackTags} />
+        {want3D && (
+          <LagoonCanvas
+            className="hero-lagoon__canvas"
+            houses={featuredProjects}
+            apiRef={apiRef}
+            onPending={handlePending}
+            onReady={handleReady}
+            onFail={handleFail}
+          />
+        )}
 
-      {/* Gradient orbs that drift */}
-      {orbData.map((orb) => (
-        <div
-          key={orb.id}
-          className={`hero-section__orb hero-section__orb--${orb.color}`}
-          style={{
-            width: orb.size,
-            height: orb.size,
-            left: `${orb.x}%`,
-            top: `${orb.y}%`,
-            animationDuration: `${orb.duration}s`,
-            animationDelay: `${orb.delay}s`,
-          }}
-          aria-hidden="true"
-        />
-      ))}
-
-      {/* Animated KP watermark */}
-      <div className="hero-section__watermark" aria-hidden="true">
-        <span className="hero-section__watermark-text">KP</span>
-      </div>
-
-      {/* Floating diamond constellation */}
-      {diamondData.map((diamond) => (
-        <div
-          key={diamond.id}
-          className={`hero-section__diamond hero-section__diamond--${diamond.color}`}
-          style={{
-            width: diamond.size,
-            height: diamond.size,
-            left: `${diamond.x}%`,
-            top: `${diamond.y}%`,
-            animationDuration: `${diamond.duration}s`,
-            animationDelay: `${diamond.delay}s`,
-            transform: `rotate(${diamond.rotate}deg)`,
-          }}
-          aria-hidden="true"
-        />
-      ))}
-
-      {/* Connecting constellation lines */}
-      <svg className="hero-section__constellation" aria-hidden="true" viewBox="0 0 1000 800" preserveAspectRatio="none">
-        <path
-          className="hero-section__constellation-line"
-          d="M200,100 L500,200 L700,100 M300,400 L500,200 L600,500 M400,600 L600,500 L800,600 M100,500 L300,400 L200,700"
-          stroke="rgba(212,160,74,0.06)"
-          strokeWidth="1"
-          fill="none"
-        />
-        <path
-          className="hero-section__constellation-line"
-          d="M500,200 L800,100 M600,500 L800,400 M300,400 L100,300"
-          stroke="rgba(13,115,119,0.05)"
-          strokeWidth="1"
-          fill="none"
-        />
-      </svg>
-
-      {/* Bottom weave border */}
-      <div className="hero-section__weave" aria-hidden="true" />
-
-      <div className="container">
-        <div className="hero-section__content">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Badge variant="default">{t('hero.available')}</Badge>
-          </motion.div>
-
-          {/* Heading */}
-          <motion.h1
-            className="hero-section__title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {t('hero.greeting')}{' '}
-            <span className="gradient-text">Kangbode Prince</span>
-          </motion.h1>
-
-          {/* Typewriter */}
-          <motion.div
-            className="hero-section__typewriter"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <span className="hero-section__typewriter-label">{t('hero.role_prefix')} </span>
-            <span className="hero-section__typewriter-text">{text}</span>
-            <span className="hero-section__typewriter-cursor" aria-hidden="true">|</span>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            className="hero-section__description"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            {t('hero.description')}
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            className="hero-section__actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <Button href="/projects" size="lg">
+        <div className="container hero-lagoon__content">
+          <p className="hero-lagoon__eyebrow">{t('hero.lagoon.eyebrow')}</p>
+          <h1 id="hero-title" className="hero-lagoon__title">
+            Kangbode <br />
+            Prince
+          </h1>
+          <p className="hero-lagoon__tagline">{t('hero.lagoon.tagline')}</p>
+          <div className="hero-lagoon__actions">
+            <Link to="/projects" className="hero-lagoon__cta">
               {t('hero.cta_projects')}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
-            </Button>
-            <Button href="/contact" variant="secondary" size="lg">
+            </Link>
+            <Link to="/contact" className="hero-lagoon__link">
               {t('hero.cta_contact')}
-            </Button>
-          </motion.div>
+            </Link>
+          </div>
+        </div>
 
-          {/* Tech Stack */}
-          <motion.div
-            className="hero-section__tech"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            <span className="hero-section__tech-label">{t('hero.tech_label')}:</span>
-            <div className="hero-section__tech-icons">
-              {['Laravel', 'React', 'Node.js', 'PHP', 'Java', 'SQL'].map((tech) => (
-                <span key={tech} className="hero-section__tech-item">{tech}</span>
-              ))}
-            </div>
-          </motion.div>
+        {diving && (
+          <p className="container hero-lagoon__cue" aria-hidden="true">
+            {t('hero.lagoon.hint_3d')}
+          </p>
+        )}
+
+        <div className="container hero-lagoon__below">
+          <p className="hero-lagoon__below-title">{t('hero.lagoon.below')}</p>
+          <p className="hero-lagoon__hint">{t('hero.lagoon.hint_static')}</p>
         </div>
       </div>
     </section>
