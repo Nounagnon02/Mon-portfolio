@@ -49,10 +49,11 @@ const en = {
   stats: {
     label: 'Stats',
     title: 'By the Numbers',
-    projects: 'Projects Completed',
-    tech: 'Technologies Mastered',
-    years: 'Years of Experience',
-    clients: 'Happy Clients',
+    shown: 'Projects shown here',
+    commits: 'Commits on the 6 featured projects',
+    events: 'Hackathons and competitions',
+    mobile: 'Projects with a mobile app',
+    source: 'Counted in the GitHub repositories on 4 November 2026.',
   },
   skills: {
     label: 'Expertise',
@@ -69,10 +70,18 @@ const en = {
   projects: {
     label: 'Portfolio',
     title: 'Featured Projects',
-    subtitle: 'A selection of projects built with modern technologies.',
-    cta_all: 'View All Projects',
+    all_title: 'All projects',
+    others_title: 'More projects',
+    subtitle:
+      'For each project: the interface people use, and the foundations that carry it. Every figure was counted in the repository.',
+    cta_all: 'See all {{count}} projects',
     code: 'Code',
     live: 'Live',
+    code_aria: 'Source code of {{name}} (opens GitHub)',
+    live_aria: 'Live demo of {{name}} (opens a new tab)',
+    interface: 'Interface',
+    foundations: 'Foundations',
+    private: 'Private repository',
   },
   blog: {
     label: 'Articles',
@@ -119,11 +128,11 @@ const en = {
   },
   case_studies: {
     label: 'Case Studies',
-    title: 'Deep Dives',
-    subtitle: 'Real projects, real results — how I solve problems from concept to deployment.',
-    problem: 'The Problem',
-    solution: 'The Solution',
-    results: 'Key Results',
+    title: 'Two projects, up close',
+    subtitle: 'The problem, the answer, and what the repository actually shows.',
+    problem: 'The problem',
+    solution: 'The answer',
+    results: 'Verified in the code',
   },
   footer: {
     copyright: 'All rights reserved.',
@@ -198,10 +207,11 @@ const fr = {
   stats: {
     label: 'Statistiques',
     title: 'En chiffres',
-    projects: 'Projets réalisés',
-    tech: 'Technologies maîtrisées',
-    years: "Années d'expérience",
-    clients: 'Clients satisfaits',
+    shown: 'Projets présentés ici',
+    commits: 'Commits sur les 6 projets vedettes',
+    events: 'Hackathons et concours',
+    mobile: 'Projets avec application mobile',
+    source: 'Comptés dans les dépôts GitHub le 4 novembre 2026.',
   },
   skills: {
     label: 'Expertise',
@@ -218,10 +228,18 @@ const fr = {
   projects: {
     label: 'Portfolio',
     title: 'Projets phares',
-    subtitle: 'Une sélection de projets réalisés avec les technologies modernes.',
-    cta_all: 'Voir tous les projets',
+    all_title: 'Tous les projets',
+    others_title: 'Autres projets',
+    subtitle:
+      "Pour chaque projet : l'interface qu'on utilise, et les fondations qui la portent. Chaque chiffre a été compté dans le dépôt.",
+    cta_all: 'Voir les {{count}} projets',
     code: 'Code',
     live: 'Démo',
+    code_aria: 'Code source de {{name}} (ouvre GitHub)',
+    live_aria: 'Démo en ligne de {{name}} (ouvre un nouvel onglet)',
+    interface: 'Interface',
+    foundations: 'Fondations',
+    private: 'Dépôt privé',
   },
   blog: {
     label: 'Articles',
@@ -270,12 +288,11 @@ const fr = {
   },
   case_studies: {
     label: 'Études de cas',
-    title: 'Analyses détaillées',
-    subtitle:
-      'Projets réels, résultats concrets — comment je résous des problèmes du concept au déploiement.',
+    title: 'Deux projets de près',
+    subtitle: 'Le problème, la réponse, et ce que le dépôt montre vraiment.',
     problem: 'Le problème',
-    solution: 'La solution',
-    results: 'Résultats clés',
+    solution: 'La réponse',
+    results: 'Vérifié dans le code',
   },
   footer: {
     copyright: 'Tous droits réservés.',

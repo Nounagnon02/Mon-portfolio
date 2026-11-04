@@ -11,6 +11,7 @@ export const projects = [
     id: 'ecole',
     name: 'École',
     featured: true,
+    commits: 159,
     kind: { fr: 'Gestion scolaire', en: 'School management' },
     summary: {
       fr: 'Plateforme de gestion scolaire : une API Laravel sert un site web, une application mobile et une application de bureau, avec un tableau de bord pour chacun des 10 rôles.',
@@ -31,6 +32,7 @@ export const projects = [
     id: 'sgp-uac',
     name: 'SGP-UAC',
     featured: true,
+    commits: 204,
     kind: { fr: 'Présence par QR code', en: 'QR code attendance' },
     summary: {
       fr: "Vérification de présence des étudiants : un QR code renouvelé chaque minute, et un serveur qui contrôle la salle, le réseau et l'appareil avant de valider.",
@@ -54,6 +56,7 @@ export const projects = [
     id: 'repetia',
     name: 'RépétIA',
     featured: true,
+    commits: 131,
     kind: { fr: 'Répétiteur IA', en: 'AI tutor' },
     summary: {
       fr: "Répétiteur de maths pour le BEPC béninois : exercices calés sur le programme, correction pas à pas, chat et suivi de progression, sur un téléphone d'entrée de gamme.",
@@ -76,6 +79,7 @@ export const projects = [
     id: 'salon-rdv',
     name: '[Salon de coiffure]',
     featured: true,
+    commits: 28,
     kind: { fr: 'Rendez-vous et boutique', en: 'Booking and shop' },
     summary: {
       fr: 'Prise de rendez-vous en ligne pour un salon de coiffure : créneaux calculés selon les disponibilités, acompte en ligne, boutique et programme de fidélité.',
@@ -95,6 +99,7 @@ export const projects = [
     id: 'glotto-bot',
     name: 'GLOTTO-BOT',
     featured: true,
+    commits: 1,
     kind: { fr: 'Chatbot WhatsApp', en: 'WhatsApp chatbot' },
     summary: {
       fr: 'Chatbot WhatsApp qui explique aux élèves les termes scientifiques en français et en fon, avec quiz et retours.',
@@ -115,6 +120,7 @@ export const projects = [
     id: 'second-opinion',
     name: 'Second Opinion',
     featured: true,
+    commits: 6,
     kind: { fr: 'Serveur MCP', en: 'MCP server' },
     summary: {
       fr: "Couche de confiance sur l'API CoinMarketCap : elle croise les sources, note la fiabilité d'une donnée et rend un verdict ACT / CAUTION / DO_NOT_ACT avec les preuves.",
@@ -163,8 +169,9 @@ export const projects = [
     context: null,
     interface: ['React 19', 'Tailwind'],
     foundations: ['Laravel 12', 'FedaPay'],
-    facts: [{ fr: 'Dépôt privé', en: 'Private repository' }],
+    facts: [{ fr: 'Paiement revérifié côté serveur', en: 'Payment re-checked on the server' }],
     links: { code: null, demo: null },
+    private: true,
     team: null,
   },
   {
@@ -181,6 +188,7 @@ export const projects = [
     foundations: ['API REST (équipe)'],
     facts: [{ fr: '19 commits sur 31', en: '19 of 31 commits' }],
     links: { code: null, demo: 'https://agritwin.vercel.app' },
+    private: true,
     team: { fr: "Projet d'équipe : interface", en: 'Team project: front end' },
   },
   {

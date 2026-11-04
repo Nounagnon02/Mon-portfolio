@@ -5,7 +5,7 @@ import StatsSection from '../components/sections/StatsSection';
 export default function Projects() {
   return (
     <>
-      <ProjectsSection />
+      <ProjectsSection variant="all" />
       <CaseStudySection />
       <StatsSection />
     </>
