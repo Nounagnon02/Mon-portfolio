@@ -4,7 +4,8 @@
    network-first for navigation.
    ═══════════════════════════════════════════ */
 
-const CACHE = 'kp-portfolio-v1';
+// v2: lagoon redesign — the activate step deletes the v1 cache and its old assets
+const CACHE = 'kp-portfolio-v2';
 const ASSETS = [
   '/',
   '/index.html',

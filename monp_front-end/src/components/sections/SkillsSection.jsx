@@ -1,24 +1,58 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import SectionTitle from '../ui/SectionTitle';
 import { useI18n } from '../../context/I18nContext';
-import { skillService } from '../../services/skillService';
+import { projects } from '../../data/projects';
 import './SkillsSection.css';
 
-const defaultSkills = {
-  'Frontend': ['React', 'JavaScript', 'HTML5', 'CSS3'],
-  'Backend': ['Laravel', 'PHP', 'Node.js', 'Java'],
-  'Database': ['SQL', 'MySQL', 'PostgreSQL'],
-  'Tools': ['Git/GitHub', 'Docker', 'REST APIs', 'Linux'],
+/* Skills are counted from the verified projects: each tool shows in how many
+   projects of this portfolio it appears (interface or foundations). */
+const SKILLS = {
+  interfaces: [
+    ['React', /^(pwa )?react\b(?! native)/i],
+    ['Expo / React Native', /expo|react native/i],
+    ['Next.js', /^next\.js/i],
+    ['Tailwind CSS', /tailwind/i],
+    ['TypeScript', /typescript/i],
+    ['Nuxt', /^nuxt/i],
+    ['Electron', /electron/i],
+  ],
+  backend: [
+    ['Laravel', /^laravel/i],
+    ['Python (FastAPI, Flask)', /fastapi|flask/i],
+    ['Node.js / Express', /express|node\.js/i],
+    ['Solidity', /solidity/i],
+  ],
+  data: [
+    ['PostgreSQL', /postgres/i],
+    ['MySQL', /mysql/i],
+    ['Supabase', /supabase/i],
+    ['SQLite', /sqlite/i],
+    ['Prisma', /prisma/i],
+    ['Redis', /redis/i],
+  ],
+  services: [
+    ['FedaPay', /fedapay/i],
+    ['Gemini', /gemini/i],
+    ['CinetPay', /cinetpay/i],
+    ['Mojaloop', /mojaloop/i],
+    ['Twilio / WhatsApp', /twilio|whatsapp/i],
+    ['Docker', /docker/i],
+    ['Playwright', /playwright/i],
+  ],
 };
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
+const skillGroups = Object.entries(SKILLS).map(([group, defs]) => ({
+  group,
+  items: defs
+    .map(([name, pattern]) => ({
+      name,
+      count: projects.filter((p) => [...p.interface, ...p.foundations].some((tool) => pattern.test(tool))).length,
+    }))
+    .filter((s) => s.count > 0)
+    .sort((a, b) => b.count - a.count),
+}));
 
+const containerVariants = { visible: { transition: { staggerChildren: 0.1 } } };
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
@@ -26,53 +60,14 @@ const itemVariants = {
 
 export default function SkillsSection() {
   const { t } = useI18n();
-  const [skills, setSkills] = useState([]);
-
-  useEffect(() => {
-    loadSkills();
-  }, []);
-
-  const loadSkills = async () => {
-    // First try localStorage (set from dashboard)
-    const stored = localStorage.getItem('kp_skills');
-    if (stored) {
-      try {
-        const data = JSON.parse(stored);
-        if (Array.isArray(data) && data.length > 0) {
-          setSkills(data);
-          return;
-        }
-      } catch { /* fall through */ }
-    }
-    // Then try API
-    try {
-      const res = await skillService.getAll();
-      const data = res.data || [];
-      setSkills(Array.isArray(data) ? data : []);
-    } catch {
-      setSkills([]);
-    }
-  };
-
-  // Convert localStorage/custom skills format to grouped object
-  const skillsByCategory = skills.length > 0
-    ? (skills[0].skills ? skills.reduce((acc, cat) => {
-        acc[cat.category] = cat.skills;
-        return acc;
-      }, {}) : skills.reduce((acc, skill) => {
-        const cat = skill.category || 'Other';
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(skill.name);
-        return acc;
-      }, {}))
-    : defaultSkills;
 
   return (
-    <section className="section skills-section" id="skills" aria-label="Skills">
+    <section className="section skills-section" id="skills" aria-labelledby="skills-title">
       <div className="container">
         <SectionTitle
+          align="left"
           label={t('skills.label')}
-          title={t('skills.title')}
+          title={<span id="skills-title">{t('skills.title')}</span>}
           subtitle={t('skills.subtitle')}
         />
 
@@ -83,14 +78,19 @@ export default function SkillsSection() {
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
         >
-          {Object.entries(skillsByCategory).map(([category, items]) => (
-            <motion.div key={category} className="skill-category" variants={itemVariants}>
-              <h3 className="skill-category__title">{category}</h3>
-              <div className="skill-category__items">
+          {skillGroups.map(({ group, items }) => (
+            <motion.div key={group} className="skill-category" variants={itemVariants}>
+              <h3 className="skill-category__title">{t(`skills.groups.${group}`)}</h3>
+              <ul className="skill-category__items">
                 {items.map((skill) => (
-                  <span key={skill} className="skill-item">{skill}</span>
+                  <li key={skill.name} className="skill-item">
+                    <span>{skill.name}</span>
+                    <span className="skill-item__count" aria-label={t('skills.count_aria', { count: skill.count })}>
+                      {skill.count}
+                    </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </motion.div>
           ))}
         </motion.div>

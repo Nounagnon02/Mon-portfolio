@@ -19,9 +19,7 @@ export default function Footer() {
         <div className="footer__inner">
           <div className="footer__brand">
             <Logo className="footer__logo" size={36} />
-            <p className="footer__tagline">
-              Full-Stack Developer crafting premium digital experiences.
-            </p>
+            <p className="footer__tagline">{t('footer.tagline')}</p>
           </div>
 
           <div className="footer__socials">

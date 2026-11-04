@@ -19,7 +19,6 @@ export default function Header() {
     { path: '/', label: t('nav.home') },
     { path: '/about', label: t('nav.about') },
     { path: '/projects', label: t('nav.projects') },
-    { path: '/blog', label: t('nav.blog') },
     { path: '/resume', label: t('nav.resume') },
     { path: '/contact', label: t('nav.contact') },
   ];

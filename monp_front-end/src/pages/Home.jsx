@@ -5,7 +5,6 @@ import StatsSection from '../components/sections/StatsSection';
 import SkillsSection from '../components/sections/SkillsSection';
 import ProjectsSection from '../components/sections/ProjectsSection';
 import ExperienceSection from '../components/sections/ExperienceSection';
-import BlogSection from '../components/sections/BlogSection';
 import ContactSection from '../components/sections/ContactSection';
 
 export default function Home() {
@@ -18,7 +17,7 @@ export default function Home() {
       <SkillsSection />
       <ProjectsSection />
       <ExperienceSection />
-      <BlogSection />
+      {/* Blog hidden until real articles exist (BlogSection.jsx kept) */}
       <ContactSection />
     </>
   );

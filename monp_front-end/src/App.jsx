@@ -5,8 +5,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import Blog from './pages/Blog';
-import BlogArticle from './pages/BlogArticle';
 import Dashboard from './pages/Dashboard';
 import Resume from './pages/Resume';
 import NotFound from './pages/NotFound';
@@ -36,8 +34,7 @@ export default function App() {
           <Route path="/about" element={<AnimatedPage><About /></AnimatedPage>} />
           <Route path="/projects" element={<AnimatedPage><Projects /></AnimatedPage>} />
           <Route path="/contact" element={<AnimatedPage><Contact /></AnimatedPage>} />
-          <Route path="/blog" element={<AnimatedPage><Blog /></AnimatedPage>} />
-          <Route path="/blog/:slug" element={<AnimatedPage><BlogArticle /></AnimatedPage>} />
+          {/* /blog routes removed until real articles exist: pages/Blog.jsx and BlogArticle.jsx are kept */}
           <Route path="/dashboard" element={<AnimatedPage><Dashboard /></AnimatedPage>} />
           <Route path="/resume" element={<AnimatedPage><Resume /></AnimatedPage>} />
           <Route path="*" element={<AnimatedPage><NotFound /></AnimatedPage>} />

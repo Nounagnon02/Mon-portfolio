@@ -42,15 +42,15 @@
 }
 
 /* ---- Variants ---- */
+/* Same solid ink as the hero call to action; follows the dawn/night theme */
 .btn--primary {
-  background: var(--accent-gradient);
-  color: white;
-  box-shadow: 0 4px 16px var(--accent-primary-glow);
+  background: var(--lagoon-ink);
+  color: var(--lagoon-sky-top);
 }
 
 .btn--primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--accent-primary-glow);
+  box-shadow: var(--shadow-md);
 }
 
 .btn--primary:active:not(:disabled) {
