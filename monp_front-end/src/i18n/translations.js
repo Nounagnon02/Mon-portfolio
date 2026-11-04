@@ -16,6 +16,13 @@ const en = {
     cta_projects: 'View My Work',
     cta_contact: 'Get in Touch',
     tech_label: 'Tech Stack',
+    lagoon: {
+      eyebrow: 'Full-stack developer · Cotonou, Benin',
+      tagline: 'The interface is the house everyone sees. What holds it up is my craft.',
+      below: 'Under the surface: what carries each project.',
+      hint_3d: 'Scroll to dive ↓',
+      hint_static: 'Scroll to see the projects ↓',
+    },
   },
   about: {
     label: 'About',
@@ -30,11 +37,14 @@ const en = {
     title: 'Services & Expertise',
     subtitle: 'From concept to deployment — I deliver complete, production-ready solutions.',
     item1_title: 'Full-Stack Development',
-    item1_desc: 'End-to-end web applications from database design to polished UI. Laravel + React for scalable, maintainable solutions.',
+    item1_desc:
+      'End-to-end web applications from database design to polished UI. Laravel + React for scalable, maintainable solutions.',
     item2_title: 'API Design & Architecture',
-    item2_desc: 'RESTful APIs designed for performance, security, and scalability. Clean documentation and robust authentication.',
+    item2_desc:
+      'RESTful APIs designed for performance, security, and scalability. Clean documentation and robust authentication.',
     item3_title: 'Frontend Development',
-    item3_desc: 'Modern, responsive interfaces built with React. Premium UI/UX, animations, and pixel-perfect implementations.',
+    item3_desc:
+      'Modern, responsive interfaces built with React. Premium UI/UX, animations, and pixel-perfect implementations.',
   },
   stats: {
     label: 'Stats',
@@ -84,9 +94,11 @@ const en = {
   contact: {
     label: 'Contact',
     title: "Let's Work Together",
-    subtitle: "Have a project in mind or just want to say hi? I'm always open to new opportunities.",
+    subtitle:
+      "Have a project in mind or just want to say hi? I'm always open to new opportunities.",
     info_title: 'Get in touch',
-    info_text: 'Whether you have a project, a question, or just want to connect — I\'d love to hear from you.',
+    info_text:
+      "Whether you have a project, a question, or just want to connect — I'd love to hear from you.",
     email_label: 'Email',
     location_label: 'Location',
     form: {
@@ -96,7 +108,7 @@ const en = {
       message: 'Message',
       send: 'Send Message',
       sending: 'Sending...',
-      success: 'Message sent successfully! I\'ll get back to you soon.',
+      success: "Message sent successfully! I'll get back to you soon.",
       placeholder_name: 'Your name',
       placeholder_email: 'your@email.com',
       placeholder_subject: 'Project, question, or collaboration',
@@ -119,7 +131,7 @@ const en = {
   },
   not_found: {
     title: 'Page not found',
-    description: 'The page you\'re looking for doesn\'t exist or has been moved.',
+    description: "The page you're looking for doesn't exist or has been moved.",
     cta: 'Back to Home',
   },
   common: {
@@ -128,6 +140,8 @@ const en = {
     retry: 'Retry',
     switch_theme: 'Switch to',
     switch_lang: 'Switch to English / Passer en français',
+    motion_off: 'Turn off animations',
+    motion_on: 'Turn on animations',
   },
 };
 
@@ -149,38 +163,50 @@ const fr = {
     cta_projects: 'Voir mes projets',
     cta_contact: 'Me contacter',
     tech_label: 'Stack technique',
+    lagoon: {
+      eyebrow: 'Développeur full-stack · Cotonou, Bénin',
+      tagline:
+        "L'interface, c'est la maison que tout le monde voit. Ce qui la porte, c'est mon métier.",
+      below: 'Sous la surface : ce qui porte chaque projet.',
+      hint_3d: 'Défilez pour plonger ↓',
+      hint_static: 'Défilez pour voir les projets ↓',
+    },
   },
   about: {
     label: 'À propos',
     title: 'Des solutions digitales qui font la différence',
     p1: 'Je suis un développeur full-stack basé à Cotonou, Bénin, avec une expertise sur toute la pile de développement web. Que ce soit en créant des frontends élégants avec React ou en construisant des backends robustes avec Laravel et Node.js, je donne vie aux idées.',
-    p2: 'Mon approche allie une architecture propre à un design centré sur l\'utilisateur. Je crois qu\'un bon logiciel commence par la compréhension du problème, puis par l\'application des bons outils — que ce soit PHP, Java ou JavaScript.',
-    p3: 'Quand je ne code pas, j\'explore les nouvelles technologies, je contribue à l\'open-source et je cherche de meilleures façons de résoudre des problèmes complexes.',
+    p2: "Mon approche allie une architecture propre à un design centré sur l'utilisateur. Je crois qu'un bon logiciel commence par la compréhension du problème, puis par l'application des bons outils — que ce soit PHP, Java ou JavaScript.",
+    p3: "Quand je ne code pas, j'explore les nouvelles technologies, je contribue à l'open-source et je cherche de meilleures façons de résoudre des problèmes complexes.",
     cta_resume: 'Télécharger CV',
   },
   services: {
     label: 'Ce que je fais',
     title: 'Services & Expertise',
-    subtitle: 'Du concept au déploiement — je livre des solutions complètes, prêtes pour la production.',
+    subtitle:
+      'Du concept au déploiement — je livre des solutions complètes, prêtes pour la production.',
     item1_title: 'Développement Full-Stack',
-    item1_desc: 'Applications web de bout en bout, de la conception de base de données à l\'interface finale. Laravel + React pour des solutions évolutives et maintenables.',
-    item2_title: 'Conception & Architecture d\'API',
-    item2_desc: 'APIs RESTful conçues pour la performance, la sécurité et l\'évolutivité. Documentation claire et authentification robuste.',
+    item1_desc:
+      "Applications web de bout en bout, de la conception de base de données à l'interface finale. Laravel + React pour des solutions évolutives et maintenables.",
+    item2_title: "Conception & Architecture d'API",
+    item2_desc:
+      "APIs RESTful conçues pour la performance, la sécurité et l'évolutivité. Documentation claire et authentification robuste.",
     item3_title: 'Développement Frontend',
-    item3_desc: 'Interfaces modernes et responsives construites avec React. UI/UX premium, animations et implémentations pixel-perfect.',
+    item3_desc:
+      'Interfaces modernes et responsives construites avec React. UI/UX premium, animations et implémentations pixel-perfect.',
   },
   stats: {
     label: 'Statistiques',
     title: 'En chiffres',
     projects: 'Projets réalisés',
     tech: 'Technologies maîtrisées',
-    years: 'Années d\'expérience',
+    years: "Années d'expérience",
     clients: 'Clients satisfaits',
   },
   skills: {
     label: 'Expertise',
-    title: 'Technologies que j\'utilise',
-    subtitle: 'Un aperçu complet des outils et technologies que j\'utilise au quotidien.',
+    title: "Technologies que j'utilise",
+    subtitle: "Un aperçu complet des outils et technologies que j'utilise au quotidien.",
   },
   experience: {
     label: 'Carrière',
@@ -200,11 +226,12 @@ const fr = {
   blog: {
     label: 'Articles',
     title: 'Dernières publications',
-    subtitle: 'Réflexions sur le développement, l\'architecture et les outils qui façonnent le web moderne.',
+    subtitle:
+      "Réflexions sur le développement, l'architecture et les outils qui façonnent le web moderne.",
     cta_all: 'Voir tous les articles',
     read_mins: 'min de lecture',
     no_articles: 'Aucun article dans cette catégorie pour le moment. Revenez bientôt !',
-    read_more: 'Lire l\'article',
+    read_more: "Lire l'article",
     filters: {
       all: 'Tout',
     },
@@ -217,9 +244,11 @@ const fr = {
   contact: {
     label: 'Contact',
     title: 'Travaillons ensemble',
-    subtitle: 'Vous avez un projet en tête ou simplement envie de dire bonjour ? Je suis toujours ouvert aux nouvelles opportunités.',
+    subtitle:
+      'Vous avez un projet en tête ou simplement envie de dire bonjour ? Je suis toujours ouvert aux nouvelles opportunités.',
     info_title: 'Restons en contact',
-    info_text: 'Que vous ayez un projet, une question ou simplement envie d\'échanger — je serais ravi de vous entendre.',
+    info_text:
+      "Que vous ayez un projet, une question ou simplement envie d'échanger — je serais ravi de vous entendre.",
     email_label: 'Email',
     location_label: 'Localisation',
     form: {
@@ -235,13 +264,15 @@ const fr = {
       placeholder_subject: 'Projet, question ou collaboration',
       placeholder_message: 'Parlez-moi de votre projet...',
       error_required: 'Veuillez remplir tous les champs obligatoires.',
-      error_failed: 'Une erreur est survenue. Veuillez réessayer ou m\'envoyer un email directement.',
+      error_failed:
+        "Une erreur est survenue. Veuillez réessayer ou m'envoyer un email directement.",
     },
   },
   case_studies: {
     label: 'Études de cas',
     title: 'Analyses détaillées',
-    subtitle: 'Projets réels, résultats concrets — comment je résous des problèmes du concept au déploiement.',
+    subtitle:
+      'Projets réels, résultats concrets — comment je résous des problèmes du concept au déploiement.',
     problem: 'Le problème',
     solution: 'La solution',
     results: 'Résultats clés',
@@ -252,8 +283,8 @@ const fr = {
   },
   not_found: {
     title: 'Page introuvable',
-    description: 'La page que vous recherchez n\'existe pas ou a été déplacée.',
-    cta: 'Retour à l\'accueil',
+    description: "La page que vous recherchez n'existe pas ou a été déplacée.",
+    cta: "Retour à l'accueil",
   },
   common: {
     loading: 'Chargement...',
@@ -261,6 +292,8 @@ const fr = {
     retry: 'Réessayer',
     switch_theme: 'Passer en',
     switch_lang: 'Switch to English',
+    motion_off: 'Couper les animations',
+    motion_on: 'Activer les animations',
   },
 };
 

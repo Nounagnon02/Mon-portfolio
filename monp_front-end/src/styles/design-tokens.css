@@ -1,46 +1,46 @@
 /* ============================================================
    DESIGN TOKENS — Kangbode Prince Portfolio
-   Identity: "Bénin Signature"
-   Dark theme first, light theme via [data-theme="light"]
+   Identity: "Ce qui tient la maison" (lagune, pilotis)
+   Light theme "Aube" by default, dark theme "Nuit" via [data-theme="dark"]
    ============================================================ */
 
-:root {
-  /* ---- Colors (Dark Theme - Default) ---- */
-  /* Signature warm-toned dark palette */
-  --bg-primary: #0A0806;
-  --bg-secondary: #12100E;
-  --bg-tertiary: #1A1816;
-  --bg-card: #1E1C1A;
-  --bg-elevated: #252220;
-  --bg-hover: #2A2825;
+:root,
+[data-theme="light"] {
+  /* ---- Colors (Light Theme "Aube" - Default) ---- */
+  --bg-primary: #F4ECDF;
+  --bg-secondary: #EDE2CF;
+  --bg-tertiary: #E4D6BF;
+  --bg-card: #FBF7F0;
+  --bg-elevated: #FFFCF6;
+  --bg-hover: #E9DCC6;
 
-  --text-primary: #F5F0EB;
-  --text-secondary: #B8B0A8;
-  --text-tertiary: #8A8278;
-  --text-muted: #6A6258;
-  --text-inverse: #0A0806;
+  --text-primary: #2A1D14;
+  --text-secondary: #4E3D30;
+  --text-tertiary: #6B5848;
+  --text-muted: #8C7660;
+  --text-inverse: #F4ECDF;
 
-  --border-primary: #2A2825;
-  --border-secondary: #35302B;
-  --border-subtle: #1E1C1A;
+  --border-primary: #DCCDB4;
+  --border-secondary: #CBB99D;
+  --border-subtle: #EADFCC;
 
-  /* ---- Brand Colors — "Bénin Signature" palette ---- */
-  /* Warm gold — the signature accent (inspired by Sahelian gold) */
-  --accent-gold: #D4A04A;
-  --accent-gold-hover: #E0B45E;
-  --accent-gold-muted: rgba(212, 160, 74, 0.12);
-  --accent-gold-glow: rgba(212, 160, 74, 0.25);
+  /* ---- Brand Colors — "Lagune" palette ---- */
+  /* Dawn light — the signature accent (dark enough for text on brume) */
+  --accent-gold: #A3561B;
+  --accent-gold-hover: #8A4614;
+  --accent-gold-muted: rgba(163, 86, 27, 0.1);
+  --accent-gold-glow: rgba(217, 140, 63, 0.25);
 
-  /* Deep teal — complementary contrast (inspired by lagoon waters) */
-  --accent-teal: #0D7377;
-  --accent-teal-hover: #148A8F;
-  --accent-teal-muted: rgba(13, 115, 119, 0.12);
+  /* Lagoon depth — complementary contrast */
+  --accent-teal: #1F5C66;
+  --accent-teal-hover: #174A52;
+  --accent-teal-muted: rgba(31, 92, 102, 0.1);
 
-  /* Warm terracotta — secondary accent (earthy, grounded) */
-  --accent-terracotta: #C9614A;
-  --accent-terracotta-muted: rgba(201, 97, 74, 0.12);
+  /* Stilt wood — secondary accent */
+  --accent-terracotta: #9C4A2E;
+  --accent-terracotta-muted: rgba(156, 74, 46, 0.1);
 
-  /* Primary accent alias (gold is the hero) */
+  /* Primary accent alias */
   --accent-primary: var(--accent-gold);
   --accent-primary-hover: var(--accent-gold-hover);
   --accent-primary-muted: var(--accent-gold-muted);
@@ -50,32 +50,69 @@
   --accent-secondary: var(--accent-teal);
   --accent-secondary-muted: var(--accent-teal-muted);
 
-  /* Gradients — signature gold-teal-terracotta */
-  --accent-gradient: linear-gradient(135deg, #D4A04A 0%, #0D7377 50%, #C9614A 100%);
-  --accent-gradient-reverse: linear-gradient(135deg, #C9614A 0%, #0D7377 50%, #D4A04A 100%);
-  --accent-gradient-warm: linear-gradient(135deg, #D4A04A 0%, #C9614A 100%);
-  --accent-gradient-cool: linear-gradient(135deg, #0D7377 0%, #2D5A5E 100%);
-  --accent-gradient-subtle: linear-gradient(135deg, rgba(212, 160, 74, 0.12), rgba(13, 115, 119, 0.12));
+  /* Gradients — kept for existing components, toned down */
+  --accent-gradient: linear-gradient(135deg, #A3561B 0%, #1F5C66 100%);
+  --accent-gradient-reverse: linear-gradient(135deg, #1F5C66 0%, #A3561B 100%);
+  --accent-gradient-warm: linear-gradient(135deg, #A3561B 0%, #9C4A2E 100%);
+  --accent-gradient-cool: linear-gradient(135deg, #1F5C66 0%, #0E2A33 100%);
+  --accent-gradient-subtle: linear-gradient(135deg, rgba(163, 86, 27, 0.08), rgba(31, 92, 102, 0.08));
 
   /* === Legacy aliases for backward compatibility === */
   --accent-blue: var(--accent-teal);
   --accent-blue-hover: var(--accent-teal-hover);
   --accent-blue-muted: var(--accent-teal-muted);
-  --accent-blue-glow: rgba(13, 115, 119, 0.25);
+  --accent-blue-glow: rgba(31, 92, 102, 0.25);
   --accent-purple: var(--accent-terracotta);
-  --accent-purple-hover: #D97A63;
+  --accent-purple-hover: #84391F;
   --accent-purple-muted: var(--accent-terracotta-muted);
 
   /* Semantic Colors */
-  --color-success: #2D8F5E;
-  --color-warning: #D4A04A;
-  --color-error: #C9614A;
-  --color-info: #0D7377;
+  --color-success: #2F6B3F;
+  --color-warning: #A3561B;
+  --color-error: #9C2F23;
+  --color-info: #1F5C66;
 
-  /* ---- Typography ---- */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* ---- Lagoon scene (hero, 3D and static fallback) ---- */
+  --lagoon-sky-top: #E9DCC6;
+  --lagoon-sky-bottom: #EFC895;
+  --lagoon-sun: #D98C3F;
+  --lagoon-sun-glow: rgba(243, 181, 102, 0.55);
+  --lagoon-haze: #E8C9A0;
+  --lagoon-shore: #B9A487;
+  --lagoon-water: #7A8E8C;
+  --lagoon-water-line: #C7D3D0;
+  --lagoon-deep-top: #174656;
+  --lagoon-deep-bottom: #0A1E25;
+  --lagoon-wood: #3B2A1E;
+  --lagoon-wood-wet: #7B5B40;
+  --lagoon-roof: #5A4030;
+  --lagoon-deck: #2A1D14;
+  --lagoon-window: #F2B45C;
+  --lagoon-ink: #2A1D14;
+  --lagoon-ink-soft: #4E3D30;
+  --lagoon-on-deep: #E9DCC6;
+  --lagoon-on-deep-soft: #B7C6C3;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px 0 rgba(42, 29, 20, 0.05);
+  --shadow-md: 0 4px 12px rgba(42, 29, 20, 0.07);
+  --shadow-lg: 0 8px 24px rgba(42, 29, 20, 0.09);
+  --shadow-xl: 0 12px 48px rgba(42, 29, 20, 0.12);
+  --shadow-glow-primary: 0 0 24px rgba(217, 140, 63, 0.2);
+  --shadow-glow-secondary: 0 0 24px rgba(31, 92, 102, 0.2);
+  --shadow-glow-warm: 0 0 24px rgba(156, 74, 46, 0.18);
+
+  /* ---- Glass Effect ---- */
+  --glass-bg: rgba(244, 236, 223, 0.82);
+  --glass-border: rgba(42, 29, 20, 0.08);
+  --glass-blur: 16px;
+}
+
+:root {
+  /* ---- Typography (self-hosted, SIL OFL 1.1) ---- */
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
 
   --text-xs: 0.75rem;    /* 12px */
   --text-sm: 0.875rem;   /* 14px */
@@ -123,15 +160,6 @@
   --radius-3xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
 
-  /* ---- Shadows ---- */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.7);
-  --shadow-glow-primary: 0 0 24px rgba(212, 160, 74, 0.25);
-  --shadow-glow-secondary: 0 0 24px rgba(13, 115, 119, 0.25);
-  --shadow-glow-warm: 0 0 24px rgba(201, 97, 74, 0.2);
-
   /* ---- Transitions ---- */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -150,48 +178,85 @@
   /* ---- Container ---- */
   --container-max: 1200px;
   --container-padding: 1.5rem;
-
-  /* ---- Glass Effect ---- */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-blur: 16px;
 }
 
 /* ============================================================
-   LIGHT THEME — "Savane" (light, warm, airy)
+   DARK THEME — "Nuit" (the lagoon at night)
    ============================================================ */
-[data-theme="light"] {
-  --bg-primary: #FAF7F2;
-  --bg-secondary: #F5F0EA;
-  --bg-tertiary: #EDE8E0;
-  --bg-card: #FFFFFF;
-  --bg-elevated: #FFFFFF;
-  --bg-hover: #F0EBE3;
+[data-theme="dark"] {
+  --bg-primary: #0B1D23;
+  --bg-secondary: #0E2A33;
+  --bg-tertiary: #133540;
+  --bg-card: #12313B;
+  --bg-elevated: #173B46;
+  --bg-hover: #1B4350;
 
-  --text-primary: #1A1612;
-  --text-secondary: #5A5248;
-  --text-tertiary: #7A7268;
-  --text-muted: #A29A90;
-  --text-inverse: #FAF7F2;
+  --text-primary: #EDE3D2;
+  --text-secondary: #C2B6A3;
+  --text-tertiary: #A3998A;
+  --text-muted: #7D7768;
+  --text-inverse: #0B1D23;
 
-  --border-primary: #E5E0D8;
-  --border-secondary: #D5D0C8;
-  --border-subtle: #F0EBE3;
+  --border-primary: #1F4450;
+  --border-secondary: #2A5361;
+  --border-subtle: #143640;
 
-  --accent-gold-muted: rgba(212, 160, 74, 0.1);
-  --accent-teal-muted: rgba(13, 115, 119, 0.08);
-  --accent-terracotta-muted: rgba(201, 97, 74, 0.08);
-  --accent-primary-muted: var(--accent-gold-muted);
-  --accent-secondary-muted: var(--accent-teal-muted);
-  --accent-gradient-subtle: linear-gradient(135deg, rgba(212, 160, 74, 0.1), rgba(13, 115, 119, 0.08));
+  --accent-gold: #E5A55C;
+  --accent-gold-hover: #F0B873;
+  --accent-gold-muted: rgba(229, 165, 92, 0.12);
+  --accent-gold-glow: rgba(229, 165, 92, 0.25);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.1);
+  --accent-teal: #6FB3B8;
+  --accent-teal-hover: #88C4C8;
+  --accent-teal-muted: rgba(111, 179, 184, 0.12);
 
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.06);
+  --accent-terracotta: #E08A66;
+  --accent-terracotta-muted: rgba(224, 138, 102, 0.12);
+
+  --accent-gradient: linear-gradient(135deg, #E5A55C 0%, #6FB3B8 100%);
+  --accent-gradient-reverse: linear-gradient(135deg, #6FB3B8 0%, #E5A55C 100%);
+  --accent-gradient-warm: linear-gradient(135deg, #E5A55C 0%, #E08A66 100%);
+  --accent-gradient-cool: linear-gradient(135deg, #6FB3B8 0%, #1F5C66 100%);
+  --accent-gradient-subtle: linear-gradient(135deg, rgba(229, 165, 92, 0.1), rgba(111, 179, 184, 0.1));
+
+  --accent-blue-glow: rgba(111, 179, 184, 0.25);
+  --accent-purple-hover: #EBA083;
+
+  --color-success: #6FBF8A;
+  --color-warning: #E5A55C;
+  --color-error: #E58A7A;
+  --color-info: #6FB3B8;
+
+  --lagoon-sky-top: #0B1A24;
+  --lagoon-sky-bottom: #2B3A4A;
+  --lagoon-sun: #E9DCC6;
+  --lagoon-sun-glow: rgba(233, 220, 198, 0.18);
+  --lagoon-haze: #25343F;
+  --lagoon-shore: #1C2A30;
+  --lagoon-water: #2E4A52;
+  --lagoon-water-line: #557A80;
+  --lagoon-deep-top: #0E3340;
+  --lagoon-deep-bottom: #04131A;
+  --lagoon-wood: #24180F;
+  --lagoon-wood-wet: #5C4430;
+  --lagoon-roof: #33241A;
+  --lagoon-deck: #170F09;
+  --lagoon-window: #F2B45C;
+  --lagoon-ink: #EDE3D2;
+  --lagoon-ink-soft: #C2B6A3;
+  --lagoon-on-deep: #E9DCC6;
+  --lagoon-on-deep-soft: #A9BDBA;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow-primary: 0 0 24px rgba(229, 165, 92, 0.2);
+  --shadow-glow-secondary: 0 0 24px rgba(111, 179, 184, 0.2);
+  --shadow-glow-warm: 0 0 24px rgba(224, 138, 102, 0.18);
+
+  --glass-bg: rgba(11, 29, 35, 0.8);
+  --glass-border: rgba(237, 227, 210, 0.08);
 }
 
 /* ============================================================

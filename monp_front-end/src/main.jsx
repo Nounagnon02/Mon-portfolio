@@ -4,6 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ThemeProvider } from './context/ThemeContext';
 import { I18nProvider } from './context/I18nContext';
+import { MotionProvider } from './context/MotionContext';
+/* Self-hosted fonts (SIL OFL 1.1) — no request to a third-party font service */
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/manrope';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import './styles/design-tokens.css';
 import './styles/global.css';
 import './styles/animations.css';
@@ -31,9 +37,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <I18nProvider>
         <ThemeProvider>
-          <App />
+          <MotionProvider>
+            <App />
+          </MotionProvider>
         </ThemeProvider>
       </I18nProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

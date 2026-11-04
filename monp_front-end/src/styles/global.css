@@ -246,12 +246,22 @@ button {
   .custom-cursor { display: none; }
 }
 
-/* ---- Reduced Motion ---- */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* ---- Reduced Motion ----
+   data-motion is set by MotionContext: it follows prefers-reduced-motion
+   unless the visitor chose otherwise with the header button. */
+[data-motion="off"] *,
+[data-motion="off"] *::before,
+[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+[data-motion="off"] {
+  scroll-behavior: auto;
+}
+
+[data-motion="off"] .custom-cursor {
+  display: none;
 }
